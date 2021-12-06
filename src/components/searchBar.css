@@ -1,0 +1,33 @@
+.searchForm {
+  margin-top: 0;
+}
+
+.inputField {
+  height: 5vmin;
+  width: 75vmin;
+  font-size: 3vmin;
+  background-color: #222222;
+  color: #fff;
+  outline: #444;
+  outline-width: 10vmin;
+  outline-style: auto;
+  padding-left: 10px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+}
+
+.results {
+  color: #fff;
+  text-decoration: none !important;
+}
+.results :hover,
+.results :focus,
+.results :active {
+  color: #999;
+  text-decoration: none !important;
+}
+
+.resultsField {
+  margin-top: 15px;
+}
