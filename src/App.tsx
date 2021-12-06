@@ -1,21 +1,15 @@
 import React from "react";
-import { exchangeTest } from "./api/api_connection";
+import { UserInfo } from "./api/types";
 import "./App.css";
-// import runConnectionTest from "./api/api_connection";
+import SearchBar from "./components/searchBar";
 
 function App() {
-  // let testData = runConnectionTest();
-  let test: string = "failed";
-  // if (testData.status === "loaded" && testData.payload.Succesful) {
-  //   test = "Succesful!";
-  // }
-  exchangeTest();
-
   return (
     <div className="App">
       <header className="App-header">
         <h1>MonoChat</h1>
-        <p>Connection Test: {test}</p>
+        <h2>Find the People you know by name, and chat to them!</h2>
+        <SearchBar />
       </header>
     </div>
   );

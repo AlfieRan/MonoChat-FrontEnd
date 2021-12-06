@@ -1,5 +1,7 @@
-export interface Testing {
-  Succesful: boolean;
+export interface UserInfo {
+  recieved: boolean;
+  name: string;
+  id: string;
 }
 
 interface ServiceInit {

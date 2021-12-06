@@ -1,20 +1,10 @@
-import { Service, Testing } from "./types";
+import { Service, UserInfo } from "./types";
 import { useState, useEffect } from "react";
 
-const RunConnectionTest = () => {
-  const [result, setResult] = useState<Service<Testing>>({
-    status: "loading",
-  });
-
-  useEffect(() => {
-    fetch("http://localhost:8000")
-      .then((response) => response.json())
-      .then((response) => setResult(response))
-      .catch((error) => setResult({ status: "error", error }));
-  }, []);
-  console.log(result);
-  return result;
-};
+export const fetcher = (endpoint: string) =>
+  fetch(endpoint)
+    .then((response) => response.json())
+    .then((res) => res.payload);
 
 export function exchangeTest() {
   const data = { greeting: "hello" };
@@ -29,4 +19,5 @@ export function exchangeTest() {
   fetch("http://localhost:8000", options).catch((error) => console.log(error));
 }
 
-export default RunConnectionTest;
+//     fetch(`http://localhost:8000/search/?q=${searchTerm}`)
+//      .then((response) => response.json())

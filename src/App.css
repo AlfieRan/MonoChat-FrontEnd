@@ -13,7 +13,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   font-size: calc(10px + 2vmin);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
@@ -25,5 +24,16 @@
 }
 
 h1 {
-  font-size: 8vw;
+  margin-top: 25vh;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  font-size: 20vmin;
+}
+
+h2 {
+  font-weight: 250;
+  font-size: 3vmin;
+  margin-top: -2vmin;
+  padding-top: 0;
+  padding-bottom: 2vmin;
 }
