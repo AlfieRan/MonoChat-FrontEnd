@@ -4,10 +4,10 @@ import { fetcher } from "../api/api_connection";
 import { UserInfo } from "../api/types";
 import "./searchBar.css";
 
-interface SearchStateType {
-  query: string;
-  data: UserInfo[];
-}
+// interface SearchStateType {
+//   query: string;
+//   data: UserInfo[];
+// }
 
 const SearchBar = () => {
   const [query, setQuery] = useState<string>("");
@@ -22,14 +22,14 @@ const SearchBar = () => {
 
   return (
     <div className="searchForm">
-      <form>
-        <input
-          placeholder="Search for people you know..."
-          value={query}
-          onChange={(e) => handleInputChange(e.target.value)}
-          className="inputField"
-        />
-      </form>
+      <input
+        placeholder="Search for people you know..."
+        value={query}
+        onChange={(e) => {
+          handleInputChange(e.target.value);
+        }}
+        className="inputField"
+      />
       {data && (
         <div className="resultsField">
           {data.map((v) => (
