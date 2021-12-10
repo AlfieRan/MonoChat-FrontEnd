@@ -2,8 +2,7 @@ import React, { Component, useState } from "react";
 import useSWR from "swr";
 import { fetcher } from "../api/api_connection";
 import { UserInfo } from "../api/types";
-import "./searchBar.css";
-
+// import styles from "./searchBar.module.css";
 // interface SearchStateType {
 //   query: string;
 //   data: UserInfo[];
@@ -21,19 +20,19 @@ const SearchBar = () => {
   };
 
   return (
-    <div className="searchForm">
+    <div className="SearchBarMain">
       <input
         placeholder="Search for people you know..."
         value={query}
         onChange={(e) => {
           handleInputChange(e.target.value);
         }}
-        className="inputField"
+        className="SearchBarInputField"
       />
       {data && (
-        <div className="resultsField">
+        <div className="SearchBarResultsField">
           {data.map((v) => (
-            <a href={"/users/" + v.id} className="results">
+            <a href={"/users/" + v.id} className="SearchBarResults">
               {v.name}
             </a>
           ))}
