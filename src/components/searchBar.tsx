@@ -2,11 +2,8 @@ import React, { Component, useState } from "react";
 import useSWR from "swr";
 import { fetcher } from "../api/api_connection";
 import { UserInfo } from "../api/types";
+import { Box, Input, Link } from "@chakra-ui/react";
 // import styles from "./searchBar.module.css";
-// interface SearchStateType {
-//   query: string;
-//   data: UserInfo[];
-// }
 
 const SearchBar = () => {
   const [query, setQuery] = useState<string>("");
@@ -20,25 +17,28 @@ const SearchBar = () => {
   };
 
   return (
-    <div className="SearchBarMain">
-      <input
+    <Box>
+      <Input
         placeholder="Search for people you know..."
         value={query}
-        onChange={(e) => {
+        onChange={e => {
           handleInputChange(e.target.value);
         }}
-        className="SearchBarInputField"
+        /* styling stuff */
+        marginTop={[-10]}
+        height={[75]}
+        width={[750]}
+        fontSize={[35]}
+        borderRadius={[50]}
       />
       {data && (
-        <div className="SearchBarResultsField">
-          {data.map((v) => (
-            <a href={"/users/" + v.id} className="SearchBarResults">
-              {v.name}
-            </a>
+        <Box marginLeft={10} fontSize={[40]} border={5} borderColor={"#444"}>
+          {data.map(v => (
+            <Link href={"/users/" + v.id}>{v.name}</Link>
           ))}
-        </div>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 };
 
