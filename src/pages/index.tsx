@@ -29,7 +29,7 @@ function App() {
       <Text
         noOfLines={1}
         fontSize={[18, 20, 25, 33, 42, 52]}
-        marginTop={[-2, -7, -8, -12, -14, -20]}
+        marginTop={[-2, -6, -7, -10, -13, -16]}
         marginBottom={[2, 7, 8, 12, 14, 20]}
       >
         Find the People you know by name, and chat to them!

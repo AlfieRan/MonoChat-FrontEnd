@@ -25,6 +25,7 @@ const SearchBar = () => {
           handleInputChange(e.target.value);
         }}
         /* styling stuff */
+        /*  TODO Add varied sizes, not just the defualt one */
         marginTop={[-10]}
         height={[75]}
         width={[750]}
