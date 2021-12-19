@@ -1,5 +1,22 @@
 import React from "react";
 import { Box, Heading, Text, Input, Button, Link } from "@chakra-ui/react";
+import * as yup from "yup";
+
+//TODO add proper validation stuff, just using basic shit atm.
+
+// const SignUpSchema = yup.object({
+//   firstname: yup.string().nullable(),
+//   surname: yup.string().nullable(),
+//   email: yup
+//     .string()
+//     .nullable()
+//     .email(),
+//   password: yup.string().nullable(),
+//   passwordCheck: yup.string().nullable()
+// });
+//
+// interface User extends yup.TypeOf<typeof SignUpSchema> {}
+// const validated: User = User.cast(json);
 
 interface User {
   firstname?: string;
@@ -16,6 +33,42 @@ const SignUp = () => {
     console.log(SignUpData);
 
     return undefined;
+  }
+
+  function nameCheck(name: string) {
+    if (name.length > 1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function emailCheck(email: string) {
+    if (
+      email.includes("@") &&
+      email.split("@")[1].includes(".") &&
+      email.length > 6
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function passCheck(pass: string) {
+    if (pass.length > 4) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function compareCheck(pass: string | null, passCheck: string) {
+    if (pass === passCheck) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   return (
@@ -53,7 +106,7 @@ const SignUp = () => {
           value={SignUpData.firstname}
           onChange={e => {
             SignUpData.firstname = e.target.value;
-            if (SignUpData.firstname.length > 1) {
+            if (nameCheck(SignUpData.firstname)) {
               // @ts-ignore
               document.getElementById("FirstName").style.borderColor =
                 "#00FF55";
@@ -71,8 +124,16 @@ const SignUp = () => {
         <Input
           placeholder="Surname"
           value={SignUpData.surname}
+          id={"surname"}
           onChange={e => {
             SignUpData.surname = e.target.value;
+            if (nameCheck(SignUpData.surname)) {
+              // @ts-ignore
+              document.getElementById("surname").style.borderColor = "#00FF55";
+            } else {
+              // @ts-ignore
+              document.getElementById("surname").style.borderColor = "#FF2222";
+            }
           }}
           borderRadius={[18]}
           width={[450]}
@@ -81,9 +142,17 @@ const SignUp = () => {
         ></Input>
         <Input
           placeholder="Email"
+          id={"email"}
           value={SignUpData.email}
           onChange={e => {
             SignUpData.email = e.target.value;
+            if (emailCheck(SignUpData.email)) {
+              // @ts-ignore
+              document.getElementById("email").style.borderColor = "#00FF55";
+            } else {
+              // @ts-ignore
+              document.getElementById("email").style.borderColor = "#FF2222";
+            }
           }}
           borderRadius={[18]}
           width={[450]}
@@ -98,7 +167,7 @@ const SignUp = () => {
           onChange={e => {
             SignUpData.password = e.target.value;
             //TODO make the password check a lot more dignified than just if the password is more than one character lol
-            if (SignUpData.password.length > 4) {
+            if (passCheck(SignUpData.password)) {
               // @ts-ignore
               document.getElementById("pass").style.borderColor = "#00FF55";
             } else {
@@ -118,7 +187,7 @@ const SignUp = () => {
           id={"passCheck"}
           onChange={e => {
             SignUpData.passwordCheck = e.target.value;
-            if (SignUpData.passwordCheck === SignUpData.password) {
+            if (compareCheck(SignUpData.password, SignUpData.passwordCheck)) {
               // @ts-ignore
               document.getElementById("passCheck").style.borderColor =
                 "#00FF55";
