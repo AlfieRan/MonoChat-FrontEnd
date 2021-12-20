@@ -63,7 +63,7 @@ const SignUp = () => {
     }
   }
 
-  function compareCheck(pass: string | null, passCheck: string) {
+  function compareCheck(pass: string | undefined, passCheck: string) {
     if (pass === passCheck) {
       return true;
     } else {
@@ -187,6 +187,7 @@ const SignUp = () => {
           id={"passCheck"}
           onChange={e => {
             SignUpData.passwordCheck = e.target.value;
+            // @ts-ignore
             if (compareCheck(SignUpData.password, SignUpData.passwordCheck)) {
               // @ts-ignore
               document.getElementById("passCheck").style.borderColor =
