@@ -1,6 +1,19 @@
 import React from "react";
-import { Box, Heading, Text, Input, Button, Link } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  Text,
+  Input,
+  Button,
+  Link,
+  useBoolean
+} from "@chakra-ui/react";
 import * as yup from "yup";
+import useSWR from "swr";
+import { UserInfo } from "../api/types";
+import { fetcher } from "../api/api_connection";
+import { Response } from "next/dist/server/web/spec-compliant/response";
+import { RequestInit } from "next/dist/server/web/spec-extension/request";
 
 //TODO add proper validation stuff, just using basic shit atm.
 
@@ -27,44 +40,90 @@ interface User {
 }
 
 const SignUp = () => {
+  const [flag, setFlag] = useBoolean();
   let SignUpData: User = {};
 
+  async function SubmitData(info: User) {
+    const SignUpRequest = new Request("http://localhost:8000/signup", {
+      method: "POST",
+      mode: "cors", // no-cors, *cors, same-origin
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(info)
+    });
+    await fetch(SignUpRequest)
+      .then(response => response.json())
+      .then(response => {
+        if (response.successful === true) {
+          setFlag.off();
+          window.location.replace("http://localhost:3000/");
+        }
+      });
+  }
+
   function Next() {
-    console.log(SignUpData);
+    if (
+      nameCheck(SignUpData.firstname) &&
+      nameCheck(SignUpData.surname) &&
+      emailCheck(SignUpData.email) &&
+      passCheck(SignUpData.password) &&
+      compareCheck(SignUpData.password, SignUpData.passwordCheck)
+    ) {
+      setFlag.on();
+      SubmitData(SignUpData);
+    } else {
+      console.log("F");
+    }
 
     return undefined;
   }
 
-  function nameCheck(name: string) {
-    if (name.length > 1) {
-      return true;
-    } else {
+  function nameCheck(name: string | undefined) {
+    if (name === undefined) {
       return false;
+    } else {
+      if (name.length > 1) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 
-  function emailCheck(email: string) {
-    if (
-      email.includes("@") &&
-      email.split("@")[1].includes(".") &&
-      email.length > 6
-    ) {
-      return true;
-    } else {
+  function emailCheck(email: string | undefined) {
+    if (email === undefined) {
       return false;
+    } else {
+      if (
+        email.includes("@") &&
+        email.split("@")[1].includes(".") &&
+        email.length > 6
+      ) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 
-  function passCheck(pass: string) {
-    if (pass.length > 4) {
-      return true;
-    } else {
+  function passCheck(pass: string | undefined) {
+    if (pass === undefined) {
       return false;
+    } else {
+      if (pass.length > 4) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 
-  function compareCheck(pass: string | undefined, passCheck: string) {
-    if (pass === passCheck) {
+  function compareCheck(
+    pass: string | undefined,
+    passCheck: string | undefined
+  ) {
+    if (pass === passCheck && pass != undefined) {
       return true;
     } else {
       return false;
@@ -117,6 +176,7 @@ const SignUp = () => {
             }
           }}
           borderRadius={[18]}
+          borderWidth={2}
           width={[450]}
           fontSize={[20]}
           marginTop={[6]}
@@ -139,6 +199,7 @@ const SignUp = () => {
           width={[450]}
           fontSize={[20]}
           marginTop={[5]}
+          borderWidth={2}
         ></Input>
         <Input
           placeholder="Email"
@@ -158,6 +219,7 @@ const SignUp = () => {
           width={[450]}
           fontSize={[20]}
           marginTop={[5]}
+          borderWidth={2}
         ></Input>
         <Input
           placeholder="Password"
@@ -179,6 +241,7 @@ const SignUp = () => {
           width={[450]}
           fontSize={[20]}
           marginTop={[5]}
+          borderWidth={2}
         ></Input>
         <Input
           placeholder="Confirm Password"
@@ -202,14 +265,20 @@ const SignUp = () => {
           width={[450]}
           fontSize={[20]}
           marginTop={[5]}
+          borderWidth={2}
         ></Input>
         <Button
+          isLoading={flag}
           borderRadius={25}
           width={[450]}
           fontSize={[25]}
           marginTop={[5]}
           background={"#0055FF"}
           _hover={{ bg: "#003399" }}
+          _active={{
+            bg: "#3784ff",
+            transform: "scale(0.97)"
+          }}
           onClick={Next}
         >
           Next
