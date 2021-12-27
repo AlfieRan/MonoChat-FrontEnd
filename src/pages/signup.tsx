@@ -57,7 +57,7 @@ const SignUp = () => {
       .then(response => {
         if (response.successful === true) {
           setFlag.off();
-          window.location.replace("http://localhost:3000/");
+          // window.location.replace("http://localhost:3000/");
         }
       });
   }
