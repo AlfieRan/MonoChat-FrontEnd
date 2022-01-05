@@ -1,10 +1,11 @@
 import React from "react";
-
+import NavBar from "../components/NavBar";
 import { Box, Text, Heading } from "@chakra-ui/react";
 
 const Terms = () => {
   return (
     <Box display="flex" flexDir="column" alignItems="center">
+      <NavBar />
       <Heading marginTop={[5]} marginBottom={[3]}>
         Terms and Conditions
       </Heading>

@@ -4,6 +4,7 @@ import { UserInfo } from "../api/types";
 import { Box, Text, Heading } from "@chakra-ui/react";
 
 import SearchBar from "../components/searchBar";
+import NavBar from "../components/NavBar";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;'
       }
     >
+      <NavBar />
       <Heading
         as="h1"
         fontSize={[50, 100, 150, 200, 250, 300]}

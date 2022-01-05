@@ -1,10 +1,13 @@
 import React from "react";
+import NavBar from "../components/NavBar";
+import { Box, Text } from "@chakra-ui/react";
 
 const Users = () => {
   return (
-    <div>
-      <h1>{getParams(window)}</h1>
-    </div>
+    <Box>
+      <NavBar />
+      <Text>Users Page</Text>
+    </Box>
   );
 };
 
