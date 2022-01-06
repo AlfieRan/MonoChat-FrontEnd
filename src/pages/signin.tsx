@@ -18,7 +18,7 @@ interface LoginUser {
   password?: string;
 }
 
-const login = () => {
+const Signin = () => {
   const [Loading, setLoading] = useBoolean();
   const [showPassword, setShowPassword] = useBoolean(false);
   const [err, setErr] = useState<{ enabled: boolean; text: string }>({
@@ -209,4 +209,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Signin;

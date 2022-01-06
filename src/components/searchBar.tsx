@@ -12,13 +12,12 @@ interface SearchBarProps {
 }
 
 const SearchBar = (props: SearchBarProps) => {
+  const [query, setQuery] = useState<string>("");
+  const { data, error } = useSWR<UserInfo[]>(
+    `${env.ApiURL}search/?q=${query}`,
+    fetcher
+  );
   if (!props.hidden) {
-    const [query, setQuery] = useState<string>("");
-    const { data, error } = useSWR<UserInfo[]>(
-      `${env.ApiURL}search/?q=${query}`,
-      fetcher
-    );
-
     const handleInputChange = (val: string) => {
       setQuery(() => val);
     };
@@ -27,7 +26,7 @@ const SearchBar = (props: SearchBarProps) => {
       //  TODO Need to figure out how to make searches work with weird capitlisation
       <Box p={2}>
         <Input
-          placeholder="Search for people you know..."
+          placeholder="Search for people know..."
           value={query}
           onChange={e => {
             handleInputChange(e.target.value);

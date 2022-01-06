@@ -15,7 +15,7 @@ interface LoginUser {
   email?: string;
   password?: string;
 }
-const login = () => {
+const Login = () => {
   const [Loading, setLoading] = useBoolean();
   let SignUpData: LoginUser = {};
 
@@ -114,7 +114,7 @@ const login = () => {
   );
 };
 
-export default login;
+export default Login;
 
 // import {hash, compare} from 'bcrypt'
 // //Hash password

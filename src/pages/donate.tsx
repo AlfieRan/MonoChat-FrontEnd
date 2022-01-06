@@ -2,7 +2,7 @@ import React from "react";
 import NavBar from "../components/NavBar";
 import { Box, Text, Heading } from "@chakra-ui/react";
 
-const login = () => {
+const Donate = () => {
   return (
     <Box>
       <NavBar />
@@ -11,4 +11,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Donate;
