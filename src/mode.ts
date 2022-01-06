@@ -1,2 +1,2 @@
-let DeveloperMode: boolean = true;
+let DeveloperMode: boolean = false;
 export default DeveloperMode;
