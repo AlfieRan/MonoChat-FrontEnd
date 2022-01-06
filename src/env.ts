@@ -1,4 +1,4 @@
-import mode from "./mode";
+const DeveloperMode: boolean = false;
 
 const LocalFrontURL: string = "http://localhost:3000/";
 const PublicFrontURL: string = "https://monochat.app/";
@@ -7,7 +7,7 @@ const PublicApiURL: string = "https://monochat.app/api/";
 
 // Auto Generated environment variables
 const GetFrontURL = () => {
-  if (mode) {
+  if (DeveloperMode) {
     return LocalFrontURL;
   } else {
     return PublicFrontURL;
@@ -15,7 +15,7 @@ const GetFrontURL = () => {
 };
 
 const GetApiURL = () => {
-  if (mode) {
+  if (DeveloperMode) {
     return LocalApiURL;
   } else {
     return PublicApiURL;
