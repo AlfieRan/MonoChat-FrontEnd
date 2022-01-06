@@ -9,6 +9,7 @@
 
 # production
 /build
+/src/mode.ts
 
 # misc
 .DS_Store
