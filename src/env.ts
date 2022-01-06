@@ -4,7 +4,7 @@ const LocalApiURL: string = "http://localhost:8000/";
 const PublicApiURL: string = "https://monochat.app/api/";
 
 // config setup, change this as needed, should auto generate the rest of the environment variables
-let DeveloperMode: boolean = false;
+let DeveloperMode: boolean = true;
 
 // Auto Generated environment variables
 const GetFrontURL = () => {
