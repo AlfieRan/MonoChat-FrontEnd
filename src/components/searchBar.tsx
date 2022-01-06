@@ -11,6 +11,8 @@ interface SearchBarProps {
   hidden?: boolean;
 }
 
+// TODO Update things so no vulnerabilities
+
 const SearchBar = (props: SearchBarProps) => {
   const [query, setQuery] = useState<string>("");
   const { data, error } = useSWR<UserInfo[]>(
