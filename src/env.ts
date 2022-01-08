@@ -3,7 +3,7 @@ const DeveloperMode: boolean = false;
 const LocalFrontURL: string = "http://localhost:3000/";
 const PublicFrontURL: string = "https://monochat.app/";
 const LocalApiURL: string = "http://localhost:8000/";
-const PublicApiURL: string = "https://monochat.app/api/";
+const PublicApiURL: string = "https://monochat.herokuapp.com/";
 
 // Auto Generated environment variables
 const GetFrontURL = () => {
