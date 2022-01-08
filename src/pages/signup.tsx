@@ -163,10 +163,6 @@ const SignUp = () => {
         <Heading fontSize={[100]} fontWeight={500} marginBottom={[5]}>
           SignUp
         </Heading>
-        <Text color={"#FF4444"} noOfLines={2} align={"center"}>
-          THERE IS CURRENTLY NO PASSWORD HASHING <br /> DO NOT USE AN ACTUAL
-          PASSWORD IF YOU SIGN UP
-        </Text>
         <Box
           bg={"#444"}
           width={[500]}

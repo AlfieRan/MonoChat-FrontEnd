@@ -9,7 +9,8 @@ import {
   Button,
   Link,
   useBoolean,
-  Center
+  Center,
+  Image
 } from "@chakra-ui/react";
 import SignUp from "./signup";
 
@@ -19,6 +20,7 @@ interface LoginUser {
 }
 
 const Signin = () => {
+  const [SignedIn, setSignedIn] = useBoolean(false);
   const [Loading, setLoading] = useBoolean();
   const [showPassword, setShowPassword] = useBoolean(false);
   const [err, setErr] = useState<{ enabled: boolean; text: string }>({
@@ -64,6 +66,9 @@ const Signin = () => {
             text: "A Connection Error has Occurred, Please Try Again."
           });
         }
+      })
+      .catch(err => {
+        console.log(err);
       });
   }
 
@@ -205,6 +210,12 @@ const Signin = () => {
           </Link>
         </Box>
       </Box>
+      <Image
+        hidden={!SignedIn}
+        src={
+          "https://media.discordapp.net/attachments/796385294097711163/929430575633276948/unknown.png"
+        }
+      ></Image>
     </Box>
   );
 };
