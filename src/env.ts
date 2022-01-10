@@ -1,4 +1,4 @@
-const useLocalFront: boolean = false;
+const useLocalFront: boolean = true;
 const useLocalBack: boolean = false;
 
 const LocalFrontURL: string = "http://localhost:3000/";

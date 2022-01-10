@@ -9,24 +9,30 @@ import {
   Button,
   Link,
   useBoolean,
-  Center
+  Center,
+  Image
 } from "@chakra-ui/react";
 import SignUp from "./signup";
 
 interface LoginUser {
-  email?: string;
-  password?: string;
+  email: string;
+  password: string;
 }
 
 const Signin = () => {
   const [Loading, setLoading] = useBoolean();
+  const [isSignedin, setSignedin] = useBoolean(false);
   const [showPassword, setShowPassword] = useBoolean(false);
+  const [emailColour, setEmailColour] = useState();
   const [err, setErr] = useState<{ enabled: boolean; text: string }>({
     enabled: false,
     text: "Something Went Wrong, Please Try Again."
   });
   const [showSignUp, setShowSignUp] = useBoolean(false);
-  const [SignUpData, setSignUpData] = useState<LoginUser>({});
+  const [signUpData, setSignUpData] = useState<LoginUser>({
+    email: "",
+    password: ""
+  });
 
   async function DoesUserExist(email: string) {
     const SignUpRequest = new Request(
@@ -64,26 +70,30 @@ const Signin = () => {
             text: "A Connection Error has Occurred, Please Try Again."
           });
         }
+      })
+      .catch(err => {
+        console.log(err);
       });
   }
 
-  useEffect(() => {
-    try {
-      // @ts-ignore
-      SignUpData.email = document.getElementById("email").value;
-    } catch (err) {
-      console.log(err);
-    }
-  });
-
   async function SubmitLogin() {
     setLoading.on();
-    if (SignUpData.email != null || SignUpData.email != undefined) {
-      await DoesUserExist(SignUpData.email);
+    if (
+      (signUpData.email != null || signUpData.email != undefined) &&
+      !showPassword
+    ) {
+      await DoesUserExist(signUpData.email);
+    } else if (
+      (signUpData.email != null || signUpData.email != undefined) &&
+      showPassword
+    ) {
+      await DoesUserExist(signUpData.email).then(() => {
+        if (showPassword) {
+          console.log("email is gucci, would now do stuff");
+        }
+      });
     } else {
       setLoading.off();
-      // @ts-ignore
-      document.getElementById("email").style.borderColor = "#FF2222";
     }
   }
 
@@ -121,12 +131,16 @@ const Signin = () => {
           <Input
             placeholder="Email"
             id={"email"}
-            value={SignUpData.email}
+            value={signUpData.email}
             onChange={e => {
               setSignUpData(prev => ({ ...prev, email: e.target.value }));
               setErr({ enabled: false, text: "" });
               setShowSignUp.off();
               setShowPassword.off();
+            }}
+            onLoad={e => {
+              console.log(e);
+              // SignUpData.email = this.value;
             }}
             borderRadius={[18]}
             borderColor={err.enabled ? "red.500" : "white"}
@@ -145,7 +159,7 @@ const Signin = () => {
             {err.text}
           </Text>
           <Link
-            href={`${env.URL}signup?email=${SignUpData.email}`}
+            href={`${env.URL}signup?email=${signUpData.email}`}
             hidden={!showSignUp}
             fontSize={[24]}
             noOfLines={1}
@@ -166,11 +180,14 @@ const Signin = () => {
           <Input
             placeholder="Password"
             id={"password"}
-            value={SignUpData.password}
+            value={signUpData.password}
             onChange={e => {
-              SignUpData.password = e.target.value;
+              setSignUpData(prevState => ({
+                ...prevState,
+                password: e.target.value
+              }));
             }}
-            borderRadius={[18]}
+            borderRadius={25}
             width={[450]}
             fontSize={[20]}
             marginTop={[5]}
@@ -205,6 +222,12 @@ const Signin = () => {
           </Link>
         </Box>
       </Box>
+      <Image
+        hidden={!isSignedin}
+        src={
+          "https://cdn.discordapp.com/attachments/796385294097711163/929430575633276948/unknown.png"
+        }
+      ></Image>
     </Box>
   );
 };
