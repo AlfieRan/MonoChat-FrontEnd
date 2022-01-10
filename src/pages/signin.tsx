@@ -128,7 +128,7 @@ const Signin = () => {
               setShowSignUp.off();
               setShowPassword.off();
             }}
-            borderRadius={[18]}
+            borderRadius={25}
             borderColor={err.enabled ? "red.500" : "white"}
             width={[450]}
             fontSize={[20]}
@@ -170,7 +170,7 @@ const Signin = () => {
             onChange={e => {
               SignUpData.password = e.target.value;
             }}
-            borderRadius={[18]}
+            borderRadius={25}
             width={[450]}
             fontSize={[20]}
             marginTop={[5]}
