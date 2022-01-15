@@ -9,24 +9,30 @@ import {
   Button,
   Link,
   useBoolean,
-  Center
+  Center,
+  Image
 } from "@chakra-ui/react";
 import SignUp from "./signup";
+import { toast, Toaster } from "react-hot-toast";
 
 interface LoginUser {
-  email?: string;
-  password?: string;
+  email: string;
+  password: string;
 }
 
 const Signin = () => {
   const [Loading, setLoading] = useBoolean();
+  const [isSignedin, setSignedin] = useBoolean(false);
   const [showPassword, setShowPassword] = useBoolean(false);
   const [err, setErr] = useState<{ enabled: boolean; text: string }>({
     enabled: false,
     text: "Something Went Wrong, Please Try Again."
   });
   const [showSignUp, setShowSignUp] = useBoolean(false);
-  const [SignUpData, setSignUpData] = useState<LoginUser>({});
+  const [signUpData, setSignUpData] = useState<LoginUser>({
+    email: "",
+    password: ""
+  });
 
   async function DoesUserExist(email: string) {
     const SignUpRequest = new Request(
@@ -64,31 +70,56 @@ const Signin = () => {
             text: "A Connection Error has Occurred, Please Try Again."
           });
         }
+      })
+      .catch(err => {
+        console.log(err);
       });
   }
 
-  useEffect(() => {
-    try {
-      // @ts-ignore
-      SignUpData.email = document.getElementById("email").value;
-    } catch (err) {
-      console.log(err);
-    }
-  });
-
   async function SubmitLogin() {
     setLoading.on();
-    if (SignUpData.email != null || SignUpData.email != undefined) {
-      await DoesUserExist(SignUpData.email);
+    if (
+      (signUpData.email != null || signUpData.email != undefined) &&
+      !showPassword
+    ) {
+      await DoesUserExist(signUpData.email);
+    } else if (
+      (signUpData.email != null || signUpData.email != undefined) &&
+      showPassword
+    ) {
+      await DoesUserExist(signUpData.email).then(() => {
+        if (showPassword) {
+          const SignInRequest = new Request(`${env.ApiURL}signin`, {
+            method: "POST",
+            mode: "cors", // no-cors, *cors, same-origin
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              email: signUpData.email,
+              password: signUpData.password
+            })
+          });
+          console.log("Sent Login Request");
+          fetch(SignInRequest)
+            .then(response => response.json())
+            .then(response => {
+              if (response.successful === true) {
+                toast.success("Sign In Successful!");
+              } else {
+                toast.error("Sign in Failed");
+              }
+            });
+        }
+      });
     } else {
       setLoading.off();
-      // @ts-ignore
-      document.getElementById("email").style.borderColor = "#FF2222";
     }
   }
 
   return (
     <Box>
+      <Toaster />
       <NavBar />
       <Box
         marginTop={[40]}
@@ -121,7 +152,7 @@ const Signin = () => {
           <Input
             placeholder="Email"
             id={"email"}
-            value={SignUpData.email}
+            value={signUpData.email}
             onChange={e => {
               setSignUpData(prev => ({ ...prev, email: e.target.value }));
               setErr({ enabled: false, text: "" });
@@ -129,6 +160,10 @@ const Signin = () => {
               setShowPassword.off();
             }}
             borderRadius={25}
+            onLoad={e => {
+              console.log(e);
+              // SignUpData.email = this.value;
+            }}
             borderColor={err.enabled ? "red.500" : "white"}
             width={[450]}
             fontSize={[20]}
@@ -145,7 +180,7 @@ const Signin = () => {
             {err.text}
           </Text>
           <Link
-            href={`${env.URL}signup?email=${SignUpData.email}`}
+            href={`${env.URL}signup?email=${signUpData.email}`}
             hidden={!showSignUp}
             fontSize={[24]}
             noOfLines={1}
@@ -166,9 +201,13 @@ const Signin = () => {
           <Input
             placeholder="Password"
             id={"password"}
-            value={SignUpData.password}
+            type={"password"}
+            value={signUpData.password}
             onChange={e => {
-              SignUpData.password = e.target.value;
+              setSignUpData(prevState => ({
+                ...prevState,
+                password: e.target.value
+              }));
             }}
             borderRadius={25}
             width={[450]}
@@ -193,13 +232,13 @@ const Signin = () => {
           >
             Next
           </Button>
-          <Link marginTop={[2]} fontSize={[20]} variant={"link"}>
-            <Text
-              color={"#0088FF"}
-              marginLeft={2}
-              href={`${env.URL}/signup`}
-              mb={2}
-            >
+          <Link
+            marginTop={[2]}
+            fontSize={[20]}
+            variant={"link"}
+            href={`${env.URL}/signup`}
+          >
+            <Text color={"#0088FF"} marginLeft={2} mb={2}>
               Need an Account? Sign Up
             </Text>
           </Link>
