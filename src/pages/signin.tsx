@@ -13,6 +13,7 @@ import {
   Image
 } from "@chakra-ui/react";
 import SignUp from "./signup";
+import { toast, Toaster } from "react-hot-toast";
 
 interface LoginUser {
   email: string;
@@ -23,7 +24,6 @@ const Signin = () => {
   const [Loading, setLoading] = useBoolean();
   const [isSignedin, setSignedin] = useBoolean(false);
   const [showPassword, setShowPassword] = useBoolean(false);
-  const [emailColour, setEmailColour] = useState();
   const [err, setErr] = useState<{ enabled: boolean; text: string }>({
     enabled: false,
     text: "Something Went Wrong, Please Try Again."
@@ -89,7 +89,27 @@ const Signin = () => {
     ) {
       await DoesUserExist(signUpData.email).then(() => {
         if (showPassword) {
-          console.log("email is gucci, would now do stuff");
+          const SignInRequest = new Request(`${env.ApiURL}signin`, {
+            method: "POST",
+            mode: "cors", // no-cors, *cors, same-origin
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              email: signUpData.email,
+              password: signUpData.password
+            })
+          });
+          console.log("Sent Login Request");
+          fetch(SignInRequest)
+            .then(response => response.json())
+            .then(response => {
+              if (response.successful === true) {
+                toast.success("Sign In Successful!");
+              } else {
+                toast.error("Sign in Failed");
+              }
+            });
         }
       });
     } else {
@@ -99,6 +119,7 @@ const Signin = () => {
 
   return (
     <Box>
+      <Toaster />
       <NavBar />
       <Box
         marginTop={[40]}
@@ -180,6 +201,7 @@ const Signin = () => {
           <Input
             placeholder="Password"
             id={"password"}
+            type={"password"}
             value={signUpData.password}
             onChange={e => {
               setSignUpData(prevState => ({
@@ -210,24 +232,18 @@ const Signin = () => {
           >
             Next
           </Button>
-          <Link marginTop={[2]} fontSize={[20]} variant={"link"}>
-            <Text
-              color={"#0088FF"}
-              marginLeft={2}
-              href={`${env.URL}/signup`}
-              mb={2}
-            >
+          <Link
+            marginTop={[2]}
+            fontSize={[20]}
+            variant={"link"}
+            href={`${env.URL}/signup`}
+          >
+            <Text color={"#0088FF"} marginLeft={2} mb={2}>
               Need an Account? Sign Up
             </Text>
           </Link>
         </Box>
       </Box>
-      <Image
-        hidden={!isSignedin}
-        src={
-          "https://cdn.discordapp.com/attachments/796385294097711163/929430575633276948/unknown.png"
-        }
-      ></Image>
     </Box>
   );
 };

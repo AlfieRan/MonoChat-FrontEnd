@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Heading,
@@ -16,6 +16,7 @@ import { Response } from "next/dist/server/web/spec-compliant/response";
 import { RequestInit } from "next/dist/server/web/spec-extension/request";
 import NavBar from "../components/NavBar";
 import * as env from "../env";
+import toast, { Toaster } from "react-hot-toast";
 
 //TODO add proper validation stuff, just using basic shit atm.
 
@@ -34,43 +35,79 @@ import * as env from "../env";
 // const validated: User = User.cast(json);
 
 interface User {
-  firstname?: string;
-  surname?: string;
-  email?: string;
-  password?: string;
-  passwordCheck?: string;
+  firstname: string;
+  surname: string;
+  email: string;
+  password: string;
+  passwordCheck: string;
+}
+
+interface UserData {
+  name: string;
+  email: string;
+  password: string;
+  passwordCheck: string;
+}
+
+interface Params {
+  firstname: boolean;
+  surname: boolean;
+  email: boolean;
+  password: boolean;
+  passwordCheck: boolean;
 }
 
 const SignUp = () => {
   const [Loadingflag, setLoadingFlag] = useBoolean();
-  let SignUpData: User = {};
+  const [SignUpData, setSignUpData] = useState<User>({
+    firstname: "",
+    surname: "",
+    email: "",
+    password: "",
+    passwordCheck: ""
+  });
+  const [paramErrs, setParamErrs] = useState<Params>({
+    firstname: false,
+    surname: false,
+    email: false,
+    password: false,
+    passwordCheck: false
+  });
 
   useEffect(() => {
     try {
       const refEmail = document.URL.split("?")[1].split("=")[1];
       // @ts-ignore
-      document.getElementById("email").value = refEmail;
-      SignUpData.email = refEmail;
+      setSignUpData(prev => ({ ...prev, email: refEmail }));
     } catch (err) {
       console.log("No refferal Email");
     }
-  });
+  }, []);
 
   async function SubmitData(info: User) {
+    const UserBody: UserData = {
+      name: info.firstname + " " + info.surname,
+      email: info.email,
+      password: info.password,
+      passwordCheck: info.passwordCheck
+    };
     const SignUpRequest = new Request(`${env.ApiURL}signup`, {
       method: "POST",
       mode: "cors", // no-cors, *cors, same-origin
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(info)
+      body: JSON.stringify(UserBody)
     });
     await fetch(SignUpRequest)
       .then(response => response.json())
       .then(response => {
         if (response.successful === true) {
+          toast.success("Sign Up Successful!");
           setLoadingFlag.off();
           // window.location.replace("http://localhost:3000/");
+        } else {
+          toast.error("Sign Up Failed :(");
         }
       });
   }
@@ -145,6 +182,7 @@ const SignUp = () => {
 
   return (
     <Box>
+      <Toaster />
       <NavBar />
       <Box
         marginTop={[20]}
@@ -163,10 +201,6 @@ const SignUp = () => {
         <Heading fontSize={[100]} fontWeight={500} marginBottom={[5]}>
           SignUp
         </Heading>
-        <Text color={"#FF4444"} noOfLines={2} align={"center"}>
-          THERE IS CURRENTLY NO PASSWORD HASHING <br /> DO NOT USE AN ACTUAL
-          PASSWORD IF YOU SIGN UP
-        </Text>
         <Box
           bg={"#444"}
           width={[500]}
@@ -183,17 +217,14 @@ const SignUp = () => {
             id={"FirstName"}
             value={SignUpData.firstname}
             onChange={e => {
-              SignUpData.firstname = e.target.value;
-              if (nameCheck(SignUpData.firstname)) {
-                // @ts-ignore
-                document.getElementById("FirstName").style.borderColor =
-                  "#00FF55";
+              setSignUpData(prev => ({ ...prev, firstname: e.target.value }));
+              if (nameCheck(e.target.value)) {
+                setParamErrs(prevState => ({ ...prevState, firstname: false }));
               } else {
-                // @ts-ignore
-                document.getElementById("FirstName").style.borderColor =
-                  "#FF2222";
+                setParamErrs(prevState => ({ ...prevState, firstname: true }));
               }
             }}
+            borderColor={paramErrs.firstname ? "red.500" : "white"}
             borderRadius={[18]}
             borderWidth={2}
             width={[450]}
@@ -205,17 +236,14 @@ const SignUp = () => {
             value={SignUpData.surname}
             id={"surname"}
             onChange={e => {
-              SignUpData.surname = e.target.value;
-              if (nameCheck(SignUpData.surname)) {
-                // @ts-ignore
-                document.getElementById("surname").style.borderColor =
-                  "#00FF55";
+              setSignUpData(prev => ({ ...prev, surname: e.target.value }));
+              if (nameCheck(e.target.value)) {
+                setParamErrs(prevState => ({ ...prevState, surname: false }));
               } else {
-                // @ts-ignore
-                document.getElementById("surname").style.borderColor =
-                  "#FF2222";
+                setParamErrs(prevState => ({ ...prevState, surname: true }));
               }
             }}
+            borderColor={paramErrs.surname ? "red.500" : "white"}
             borderRadius={[18]}
             width={[450]}
             fontSize={[20]}
@@ -228,15 +256,14 @@ const SignUp = () => {
             type={"text"}
             value={SignUpData.email}
             onChange={e => {
-              SignUpData.email = e.target.value;
-              if (emailCheck(SignUpData.email)) {
-                // @ts-ignore
-                document.getElementById("email").style.borderColor = "#00FF55";
+              setSignUpData(prev => ({ ...prev, email: e.target.value }));
+              if (emailCheck(e.target.value)) {
+                setParamErrs(prevState => ({ ...prevState, email: false }));
               } else {
-                // @ts-ignore
-                document.getElementById("email").style.borderColor = "#FF2222";
+                setParamErrs(prevState => ({ ...prevState, email: true }));
               }
             }}
+            borderColor={paramErrs.email ? "red.500" : "white"}
             borderRadius={[18]}
             width={[450]}
             fontSize={[20]}
@@ -249,16 +276,15 @@ const SignUp = () => {
             id={"pass"}
             value={SignUpData.password}
             onChange={e => {
-              SignUpData.password = e.target.value;
+              setSignUpData(prev => ({ ...prev, password: e.target.value }));
               //TODO make the password check a lot more dignified than just if the password is more than one character lol
-              if (passCheck(SignUpData.password)) {
-                // @ts-ignore
-                document.getElementById("pass").style.borderColor = "#00FF55";
+              if (passCheck(e.target.value)) {
+                setParamErrs(prevState => ({ ...prevState, password: false }));
               } else {
-                // @ts-ignore
-                document.getElementById("pass").style.borderColor = "#FF2222";
+                setParamErrs(prevState => ({ ...prevState, password: true }));
               }
             }}
+            borderColor={paramErrs.password ? "red.500" : "white"}
             borderRadius={[18]}
             width={[450]}
             fontSize={[20]}
@@ -271,18 +297,24 @@ const SignUp = () => {
             type={"password"}
             id={"passCheck"}
             onChange={e => {
-              SignUpData.passwordCheck = e.target.value;
+              setSignUpData(prev => ({
+                ...prev,
+                passwordCheck: e.target.value
+              }));
               // @ts-ignore
-              if (compareCheck(SignUpData.password, SignUpData.passwordCheck)) {
-                // @ts-ignore
-                document.getElementById("passCheck").style.borderColor =
-                  "#00FF55";
+              if (compareCheck(SignUpData.password, e.target.value)) {
+                setParamErrs(prevState => ({
+                  ...prevState,
+                  passwordCheck: false
+                }));
               } else {
-                // @ts-ignore
-                document.getElementById("passCheck").style.borderColor =
-                  "#FF2222";
+                setParamErrs(prevState => ({
+                  ...prevState,
+                  passwordCheck: true
+                }));
               }
             }}
+            borderColor={paramErrs.passwordCheck ? "red.500" : "white"}
             borderRadius={[18]}
             width={[450]}
             fontSize={[20]}
@@ -309,8 +341,13 @@ const SignUp = () => {
           <Link fontSize={[15]} marginTop={[1]} href={`${env.URL}terms`}>
             By Signing up you agree to our Terms.
           </Link>
-          <Link marginTop={[2]} fontSize={[20]} variant={"link"}>
-            <Text color={"#0088FF"} marginLeft={2} href={`${env.URL}login`}>
+          <Link
+            marginTop={[2]}
+            fontSize={[20]}
+            variant={"link"}
+            href={`${env.URL}login`}
+          >
+            <Text color={"#0088FF"} marginLeft={2}>
               Have an Account? Log In
             </Text>
           </Link>
