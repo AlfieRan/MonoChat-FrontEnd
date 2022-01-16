@@ -2,7 +2,7 @@ import React, { Component, useState } from "react";
 import useSWR from "swr";
 import { fetcher } from "../api/api_connection";
 import { UserInfo } from "../api/types";
-import { Box, Input, Link } from "@chakra-ui/react";
+import { Box, Input, Link, Flex } from "@chakra-ui/react";
 import * as env from "../env";
 
 interface SearchBarProps {
@@ -25,7 +25,6 @@ const SearchBar = (props: SearchBarProps) => {
     };
 
     return (
-      //  TODO Need to figure out how to make searches work with weird capitlisation
       <Box p={2}>
         <Input
           placeholder="Search for people know..."
@@ -34,7 +33,7 @@ const SearchBar = (props: SearchBarProps) => {
             handleInputChange(e.target.value);
           }}
           /* styling stuff */
-          /*  TODO Add varied sizes, not just the defualt one */
+          /*  TODO Add varied sizes, not just the default one */
           marginTop={[-10]}
           height={[(props.height || 10) * 7.5]}
           width={[(props.width || 10) * 75]}
@@ -42,16 +41,17 @@ const SearchBar = (props: SearchBarProps) => {
           borderRadius={[(props.height || 10) * 5]}
         />
         {data && (
-          <Box
+          <Flex
             marginLeft={(props.width || 10) * 10}
             fontSize={[(props.height || 10) * 4]}
             border={(props.width || 10) * 5}
             borderColor={"#444"}
+            flexDir={"column"}
           >
             {data.map(v => (
-              <Link href={"/users/" + v.id}>{v.name}</Link>
+              <Link href={"/users?id=" + v.id}>{v.name}</Link>
             ))}
-          </Box>
+          </Flex>
         )}
       </Box>
     );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import * as env from "../env";
 import NavBar from "../components/NavBar";
 import {
@@ -9,10 +9,8 @@ import {
   Button,
   Link,
   useBoolean,
-  Center,
-  Image
+  Center
 } from "@chakra-ui/react";
-import SignUp from "./signup";
 import { toast, Toaster } from "react-hot-toast";
 
 interface LoginUser {
@@ -22,7 +20,6 @@ interface LoginUser {
 
 const Signin = () => {
   const [Loading, setLoading] = useBoolean();
-  const [isSignedin, setSignedin] = useBoolean(false);
   const [showPassword, setShowPassword] = useBoolean(false);
   const [err, setErr] = useState<{ enabled: boolean; text: string }>({
     enabled: false,
