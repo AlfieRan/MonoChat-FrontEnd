@@ -108,6 +108,7 @@ const SignUp = () => {
           // window.location.replace("http://localhost:3000/");
         } else {
           toast.error("Sign Up Failed :(");
+          setLoadingFlag.off();
         }
       });
   }
