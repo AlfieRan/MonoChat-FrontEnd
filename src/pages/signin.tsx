@@ -103,7 +103,7 @@ const Signin = () => {
             .then(response => {
               if (response.successful === true) {
                 toast.success("Sign In Successful!");
-                window.location.replace(`http://localhost:3000/home`);
+                window.location.replace(`${env.URL}home`);
               } else {
                 toast.error("Sign in Failed");
               }
