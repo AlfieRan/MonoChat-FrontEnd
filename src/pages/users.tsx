@@ -33,7 +33,6 @@ const Users = () => {
         console.log(response);
         if (response.successful === true) {
           SetUserInfo(response.payload);
-          toast.success("User Loaded!");
         } else {
           SetUserInfo({ name: "No User Found" });
           toast.error("User not found.");

@@ -6,26 +6,31 @@ const NavBar = () => {
   let mainURL: string = env.URL;
 
   return (
-    <Flex w={"100%"} h={"10%"} fontSize={[30]} bg={"#191919"} color={"#FFF"}>
-      <Center w={"15%"} align={"left"}>
+    <Center
+      w={"full"}
+      p={1}
+      fontSize={[14, 20, 25, 33, 42, 52]}
+      bg={"DarkGrey"}
+      color={"#FFF"}
+    >
+      <Flex px={5}>
         <Link href={mainURL + "donate"} _hover={{ color: "#4477bb" }}>
           Donate
         </Link>
-      </Center>
+      </Flex>
       <Spacer />
-      <Center>
+      <Flex px={5}>
         <Link href={mainURL} _hover={{ color: "#4477bb" }} hidden={false}>
           MonoChat
         </Link>
-      </Center>
-      <SearchBar height={5} width={6} hidden={true} />
+      </Flex>
       <Spacer />
-      <Center w={"15%"} align={"right"}>
+      <Flex px={5}>
         <Link href={mainURL + "signin"} _hover={{ color: "#4477bb" }}>
-          Sign In
+          SignIn
         </Link>
-      </Center>
-    </Flex>
+      </Flex>
+    </Center>
   );
 };
 

@@ -9,7 +9,6 @@ import NavBar from "../components/NavBar";
 function App() {
   return (
     <Box
-      bg="#222222"
       minH="100vh"
       display="flex"
       flexDir="column"
@@ -22,15 +21,15 @@ function App() {
       <NavBar />
       <Heading
         as="h1"
-        fontSize={[50, 100, 150, 200, 250, 300]}
+        fontSize={[50, 75, 100, 150, 200, 300, 400, 500]}
         fontWeight={5}
         marginTop={20}
       >
         MonoChat
       </Heading>
       <Text
-        noOfLines={1}
-        fontSize={[18, 20, 25, 33, 42, 52]}
+        textAlign={"center"}
+        fontSize={[14, 20, 25, 33, 42, 52]}
         marginTop={[-2, -6, -7, -10, -13, -16]}
         marginBottom={[2, 7, 8, 12, 14, 20]}
       >

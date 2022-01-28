@@ -103,6 +103,7 @@ const Signin = () => {
             .then(response => {
               if (response.successful === true) {
                 toast.success("Sign In Successful!");
+                window.location.replace(`http://localhost:3000/home`);
               } else {
                 toast.error("Sign in Failed");
               }
@@ -120,7 +121,6 @@ const Signin = () => {
       <NavBar />
       <Box
         marginTop={[40]}
-        bg="#222222"
         h={"100%"}
         display="flex"
         flexDir="column"

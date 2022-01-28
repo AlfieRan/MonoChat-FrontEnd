@@ -17,6 +17,7 @@ import { RequestInit } from "next/dist/server/web/spec-extension/request";
 import NavBar from "../components/NavBar";
 import * as env from "../env";
 import toast, { Toaster } from "react-hot-toast";
+import { useRouter } from "next/router";
 
 //TODO add proper validation stuff, just using basic shit atm.
 
@@ -74,15 +75,12 @@ const SignUp = () => {
     passwordCheck: false
   });
 
+  const router = useRouter();
   useEffect(() => {
-    try {
-      const refEmail = document.URL.split("?")[1].split("=")[1];
-      // @ts-ignore
-      setSignUpData(prev => ({ ...prev, email: refEmail }));
-    } catch (err) {
-      console.log("No refferal Email");
+    if (router && router.query.email) {
+      setSignUpData(prev => ({ ...prev, email: router.query.email as string }));
     }
-  }, []);
+  }, [router]);
 
   async function SubmitData(info: User) {
     const UserBody: UserData = {
@@ -105,7 +103,9 @@ const SignUp = () => {
         if (response.successful === true) {
           toast.success("Sign Up Successful!");
           setLoadingFlag.off();
-          // window.location.replace("http://localhost:3000/");
+          window.location.replace(
+            `http://localhost:3000/users?id=${response.id}`
+          );
         } else {
           toast.error("Sign Up Failed :(");
           setLoadingFlag.off();
@@ -187,7 +187,6 @@ const SignUp = () => {
       <NavBar />
       <Box
         marginTop={[20]}
-        bg="#222222"
         h={"100%"}
         display="flex"
         flexDir="column"
@@ -346,7 +345,7 @@ const SignUp = () => {
             marginTop={[2]}
             fontSize={[20]}
             variant={"link"}
-            href={`${env.URL}login`}
+            href={`${env.URL}signin`}
           >
             <Text color={"#0088FF"} marginLeft={2}>
               Have an Account? Log In
