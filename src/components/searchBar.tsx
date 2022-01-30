@@ -23,10 +23,7 @@ interface SearchBarProps {
 
 const SearchBar = (props: SearchBarProps) => {
   const [query, setQuery] = useState<string>("");
-  const { data, error } = useSWR<UserInfo[]>(
-    `${env.ApiURL}search/?q=${query}`,
-    fetcher
-  );
+  const { data, error } = useSWR<UserInfo[]>(`search/?q=${query}`);
   if (!props.hidden) {
     const handleInputChange = (val: string) => {
       setQuery(() => val);
