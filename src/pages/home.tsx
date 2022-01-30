@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <Box>
       <NavBar />
-      <Center m={3} h={"80vh"}>
+      <Center m={3} h={"84vh"}>
         <ChatBox Chatid={"06bf84e3-3119-47c8-b882-2959841b080c"} />
       </Center>
     </Box>

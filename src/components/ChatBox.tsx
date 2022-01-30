@@ -1,50 +1,36 @@
 import React, { Component, useEffect, useState } from "react";
-import * as env from "../env";
-import {
-  Link,
-  Flex,
-  Spacer,
-  Center,
-  useBoolean,
-  Text,
-  Box,
-  VStack
-} from "@chakra-ui/react";
+import { Flex, Center, Text, Box, VStack } from "@chakra-ui/react";
 import toast from "react-hot-toast";
-import message from "./message";
 import Message from "./message";
+import { getChatInfo, getMessageIds } from "../utils/hooks";
 
 const ChatBox = (props: { Chatid: string }) => {
-  const [LoadingFlag, setLoadingFlag] = useBoolean(false);
-  const [ChatInfo, setChatInfo] = useState<{ id: string; name: string }>({
+  const [ChatInfo, setChatInfo] = useState<{
+    id: string;
+    name: string;
+    messageids: string[];
+  }>({
     id: props.Chatid,
-    name: "Loading..."
+    name: "Loading...",
+    messageids: [""]
   });
 
-  async function getChatInfo(Chatid: string) {
-    setLoadingFlag.on();
-    const ChatRequest = new Request(`${env.ApiURL}chats/info?id=${Chatid}`, {
-      method: "GET",
-      mode: "cors", // no-cors, *cors, same-origin
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
+  const { data: ChatInfoData, error: ChatInfoError } = getChatInfo(ChatInfo.id);
 
-    await fetch(ChatRequest)
-      .then(response => response.json())
-      .then(response => {
-        if (response.successful === true) {
-          setChatInfo(prev => ({ ...prev, name: response.info.chatname }));
-        }
-      });
-  }
+  const { data: MsgIdData, error: MsgIdError } = getMessageIds(ChatInfo.id);
 
   useEffect(() => {
-    getChatInfo(props.Chatid).then(() => {
-      setLoadingFlag.off();
-    });
-  }, []);
+    if (ChatInfoData) {
+      setChatInfo(prev => ({ ...prev, name: ChatInfoData.chatname }));
+    }
+  }, [ChatInfoData]);
+
+  useEffect(() => {
+    if (MsgIdData) {
+      console.log(MsgIdData);
+      setChatInfo(prev => ({ ...prev, messageids: MsgIdData.messages }));
+    }
+  }, [MsgIdData]);
 
   return (
     <Box
@@ -61,11 +47,15 @@ const ChatBox = (props: { Chatid: string }) => {
           <Text>{ChatInfo.name}</Text>
         </Center>
       </Flex>
-      <Box w={"full"} h={"full"} pl={2} pr={2} pb={2}>
-        <VStack bg={"#565656"} h={"94%"} borderRadius={13}>
-          <Message content={"Message anjfhdsbjb"} byUser={true} />
-        </VStack>
-      </Box>
+      <VStack bg={"#565656"} h={"full"} borderBottomRadius={13}>
+        {ChatInfo.messageids && (
+          <Flex flexDir={"column"}>
+            {ChatInfo.messageids.map((MsgId: string) => (
+              <Message id={MsgId} />
+            ))}
+          </Flex>
+        )}
+      </VStack>
     </Box>
   );
 };

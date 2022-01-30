@@ -1,5 +1,5 @@
 import React from "react";
-import { UserInfo } from "../api/types";
+import { UserInfo } from "../utils/types";
 
 import { Box, Text, Heading } from "@chakra-ui/react";
 

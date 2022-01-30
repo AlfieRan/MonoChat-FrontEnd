@@ -1,34 +1,48 @@
 import React, { Component, useEffect, useState } from "react";
 import * as env from "../env";
-import {
-  Link,
-  Flex,
-  Spacer,
-  Center,
-  useBoolean,
-  Text,
-  Box,
-  VStack
-} from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import toast from "react-hot-toast";
+import useSWR from "swr";
+import { fetcher } from "../utils/fetcher";
+import { getMessageInfo } from "../utils/hooks";
 
-const Message = (props: { content: string; byUser: boolean }) => {
-  const [ChatInfo, setChatInfo] = useState<{
-    byUser: boolean;
+const Message = (props: { id: string }) => {
+  const [MessageInfo, setMessageInfo] = useState<{
+    id: string;
     content: string;
+    userid: string;
+    createdAt: string;
   }>({
-    byUser: props.byUser,
-    content: props.content
+    id: props.id,
+    content: "",
+    userid: "",
+    createdAt: ""
   });
-  const [MsgColour, setMsgColour] = useState<string>("");
+
+  const { data: MessageInfoData, error: MessageError } = getMessageInfo(
+    props.id
+  );
 
   useEffect(() => {
-    if (ChatInfo.byUser) {
-      setMsgColour("LightBlue");
-    } else {
-      setMsgColour("LightGreen");
+    if (MessageInfoData) {
+      setMessageInfo(prev => ({
+        ...prev,
+        content: MessageInfoData.content,
+        createdAt: MessageInfoData.createdAt,
+        userid: MessageInfoData.userId
+      }));
     }
-  }, [ChatInfo.byUser]);
+  }, [MessageInfoData]);
+
+  const [MsgColour, setMsgColour] = useState<string>("LightBlue");
+
+  // useEffect(() => {
+  //   if (ChatInfo.byUser) {
+  //     setMsgColour("LightBlue");
+  //   } else {
+  //     setMsgColour("LightGreen");
+  //   }
+  // }, [ChatInfo.byUser]);
 
   return (
     <Flex
@@ -43,7 +57,7 @@ const Message = (props: { content: string; byUser: boolean }) => {
       px={4}
       py={3}
     >
-      <Text>{ChatInfo.content}</Text>
+      <Text>{MessageInfo.content}</Text>
     </Flex>
   );
 };

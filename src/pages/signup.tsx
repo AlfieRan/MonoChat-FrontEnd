@@ -10,8 +10,8 @@ import {
 } from "@chakra-ui/react";
 import * as yup from "yup";
 import useSWR from "swr";
-import { UserInfo } from "../api/types";
-import { fetcher } from "../api/api_connection";
+import { UserInfo } from "../utils/types";
+import { fetcher } from "../utils/fetcher";
 import { Response } from "next/dist/server/web/spec-compliant/response";
 import { RequestInit } from "next/dist/server/web/spec-extension/request";
 import NavBar from "../components/NavBar";

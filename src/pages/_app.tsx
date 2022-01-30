@@ -2,6 +2,8 @@ import React from "react";
 import { AppProps } from "next/app";
 import { ChakraProvider } from "@chakra-ui/provider";
 import { extendTheme } from "@chakra-ui/react";
+import { SWRConfig } from "swr";
+import { fetcher } from "../utils/fetcher";
 
 const theme = extendTheme({
   styles: {
@@ -27,8 +29,20 @@ const theme = extendTheme({
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ChakraProvider theme={theme}>
-      <Component {...pageProps} />
-    </ChakraProvider>
+    <SWRConfig
+      value={{
+        fetcher(url) {
+          return fetcher("GET", url).then(res => res.data);
+        }
+        // refreshInterval: 120 * 1000,
+        // dedupingInterval: 120 * 1000,
+        // errorRetryInterval: 120 * 1000,
+        // focusThrottleInterval: 120 * 1000
+      }}
+    >
+      <ChakraProvider theme={theme}>
+        <Component {...pageProps} />
+      </ChakraProvider>
+    </SWRConfig>
   );
 }

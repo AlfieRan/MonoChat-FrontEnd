@@ -1,7 +1,7 @@
 import React, { Component, useState } from "react";
 import useSWR from "swr";
-import { fetcher } from "../api/api_connection";
-import { UserInfo } from "../api/types";
+import { fetcher } from "../utils/fetcher";
+import { UserInfo } from "../utils/types";
 import {
   Box,
   Input,
