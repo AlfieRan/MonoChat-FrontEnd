@@ -33,8 +33,8 @@ export default function App({ Component, pageProps }: AppProps) {
       value={{
         fetcher(url) {
           return fetcher("GET", url).then(res => res.data);
-        }
-        // refreshInterval: 120 * 1000,
+        },
+        refreshInterval: 5 * 1000
         // dedupingInterval: 120 * 1000,
         // errorRetryInterval: 120 * 1000,
         // focusThrottleInterval: 120 * 1000

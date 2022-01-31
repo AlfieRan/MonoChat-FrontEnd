@@ -75,12 +75,13 @@ const ChatBox = (props: { Chatid: string }) => {
         justifyContent={"space-between"}
         color={"#FFF"}
       >
-        <VStack bg={"#565656"} px={4} h={"full"}>
+        <VStack bg={"#565656"} px={4} h={"full"} w={"inherit"}>
           {ChatInfo.messageids && (
             <Flex
               flexDir={"column-reverse"}
               overflow={"auto"}
               scrollPaddingBottom={"2em"}
+              w={"inherit"}
             >
               {ChatInfo.messageids.map((MsgId: string) => (
                 <Message id={MsgId} key={MsgId} />
