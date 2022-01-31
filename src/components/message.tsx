@@ -48,8 +48,9 @@ const Message = (props: { id: string }) => {
     <Flex
       m={2}
       flexDir={"row"}
-      maxW={"70%"}
-      fontSize={20}
+      w={"inherit"}
+      maxWidth={"70%"}
+      fontSize={[14, 15, 16, 18, 24, 31]}
       bg={MsgColour}
       color={"#FFF"}
       borderRadius={30}
