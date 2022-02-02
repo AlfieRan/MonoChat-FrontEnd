@@ -103,9 +103,7 @@ const SignUp = () => {
         if (response.successful === true) {
           toast.success("Sign Up Successful!");
           setLoadingFlag.off();
-          window.location.replace(
-            `http://localhost:3000/users?id=${response.id}`
-          );
+          router.push(`/users?id=${response.id}`);
         } else {
           toast.error("Sign Up Failed :(");
           setLoadingFlag.off();
