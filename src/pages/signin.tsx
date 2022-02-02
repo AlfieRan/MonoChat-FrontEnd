@@ -12,6 +12,8 @@ import {
   Center
 } from "@chakra-ui/react";
 import { toast, Toaster } from "react-hot-toast";
+import { useRouter } from "next/router";
+import { fetcher } from "../utils/fetcher";
 
 interface LoginUser {
   email: string;
@@ -30,6 +32,7 @@ const Signin = () => {
     email: "",
     password: ""
   });
+  const router = useRouter();
 
   async function DoesUserExist(email: string) {
     const SignUpRequest = new Request(
@@ -86,27 +89,16 @@ const Signin = () => {
     ) {
       await DoesUserExist(signUpData.email).then(() => {
         if (showPassword) {
-          const SignInRequest = new Request(`${env.ApiURL}signin`, {
-            method: "POST",
-            mode: "cors", // no-cors, *cors, same-origin
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              email: signUpData.email,
-              password: signUpData.password
-            })
-          });
-          console.log("Sent Login Request");
-          fetch(SignInRequest)
-            .then(response => response.json())
+          fetcher("POST", "signin", {
+            email: signUpData.email,
+            password: signUpData.password
+          })
             .then(response => {
-              if (response.successful === true) {
-                toast.success("Sign In Successful!");
-                window.location.replace(`${env.URL}home`);
-              } else {
-                toast.error("Sign in Failed");
-              }
+              toast.success("Sign In Successful!");
+              router.push("/home");
+            })
+            .catch(e => {
+              toast.error("Sign in Failed");
             });
         }
       });

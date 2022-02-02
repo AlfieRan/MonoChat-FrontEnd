@@ -1,38 +1,23 @@
 import React, { Component, useEffect, useState } from "react";
-import * as env from "../env";
 import { Flex, Text } from "@chakra-ui/react";
-import toast from "react-hot-toast";
-import useSWR from "swr";
-import { fetcher } from "../utils/fetcher";
-import { getMessageInfo } from "../utils/hooks";
+import { MessageInfo } from "../utils/types";
 
-const Message = (props: { id: string }) => {
+const Message = (props: { info: MessageInfo }) => {
   const [MessageInfo, setMessageInfo] = useState<{
     id: string;
     content: string;
     userid: string;
+    username: string;
     createdAt: string;
   }>({
-    id: props.id,
-    content: "",
-    userid: "",
+    id: props.info.id,
+    content: props.info.content,
+    userid: props.info.sender.id,
+    // userid: "",
+    username: props.info.sender.name,
+    // username: "",
     createdAt: ""
   });
-
-  const { data: MessageInfoData, error: MessageError } = getMessageInfo(
-    props.id
-  );
-
-  useEffect(() => {
-    if (MessageInfoData) {
-      setMessageInfo(prev => ({
-        ...prev,
-        content: MessageInfoData.content,
-        createdAt: MessageInfoData.createdAt,
-        userid: MessageInfoData.userId
-      }));
-    }
-  }, [MessageInfoData]);
 
   const [MsgColour, setMsgColour] = useState<string>("LightBlue");
 
@@ -46,19 +31,16 @@ const Message = (props: { id: string }) => {
 
   return (
     <Flex
-      m={2}
-      flexDir={"row"}
-      w={"inherit"}
+      flexDir={"column"}
       maxWidth={"70%"}
       fontSize={[14, 15, 16, 18, 24, 31]}
-      bg={MsgColour}
       color={"#FFF"}
-      borderRadius={30}
-      right={0}
-      px={4}
-      py={3}
+      m={2}
     >
-      <Text>{MessageInfo.content}</Text>
+      <Text px={2}>{MessageInfo.username}</Text>
+      <Text bg={MsgColour} borderRadius={30} px={4} py={3}>
+        {MessageInfo.content}
+      </Text>
     </Flex>
   );
 };

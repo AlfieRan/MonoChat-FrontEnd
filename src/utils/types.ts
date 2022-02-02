@@ -17,3 +17,9 @@ export interface ErrorResponse {
   successful: false;
   error: string;
 }
+
+export type MessageInfo = {
+  id: string;
+  content: string;
+  sender: { id: string; name: string };
+};

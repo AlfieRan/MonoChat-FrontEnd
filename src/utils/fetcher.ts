@@ -10,9 +10,9 @@ export async function fetcher<T>(
 ): Promise<SuccessResponse<T>> {
   const request = await fetch(`${env.ApiURL}${endpoint}`, {
     method,
+    credentials: "include",
     headers: body ? { "Content-Type": "application/json" } : undefined,
     body: body ? JSON.stringify(body) : undefined
-    // credentials: "include"
   });
 
   const json: ApiResponse<T> = await request.json();
@@ -23,6 +23,3 @@ export async function fetcher<T>(
 
   return json;
 }
-
-//     fetch(`http://localhost:8000/search/?q=${searchTerm}`)
-//      .then((response) => response.json())

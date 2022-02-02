@@ -1,9 +1,9 @@
-const useLocalFront: boolean = false;
-const useLocalBack: boolean = false;
+const useLocalFront: boolean = true;
+const useLocalBack: boolean = true;
 
 const LocalFrontURL: string = "http://localhost:3000/";
 const PublicFrontURL: string = "https://monochat.app/";
-const LocalApiURL: string = "http://localhost:8000/";
+const LocalApiURL: string = "http://127.0.0.1:8000/";
 const PublicApiURL: string = "https://monochat.herokuapp.com/";
 
 // Auto Generated environment variables
