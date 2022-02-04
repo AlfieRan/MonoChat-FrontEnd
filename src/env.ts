@@ -1,5 +1,5 @@
-const useLocalFront: boolean = true;
-const useLocalBack: boolean = true;
+const useLocalFront: boolean = false;
+const useLocalBack: boolean = false;
 
 const LocalFrontURL: string = "http://localhost:3000/";
 const PublicFrontURL: string = "https://monochat.app/";
