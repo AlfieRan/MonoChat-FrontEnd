@@ -80,7 +80,7 @@ const ChatBox = (props: { Chatid: string }) => {
           {ChatInfo.messages && (
             <Flex
               flexDir={"column-reverse"}
-              overflow={"scroll"}
+              overflow={"auto"}
               scrollPaddingBottom={"2em"}
               w={"inherit"}
             >
