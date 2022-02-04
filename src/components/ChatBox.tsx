@@ -26,7 +26,7 @@ async function sendMessage(contents: string, userId: string, ChatId: string) {
   return newMsgId.data.Msg as MessageInfo;
 }
 
-const ChatBox = (props: { Chatid: string }) => {
+const ChatBox = (props: { Chatid: string; enableHeader?: boolean }) => {
   const [ChatInfo, setChatInfo] = useState<{
     id: string;
     name: string;
@@ -61,7 +61,13 @@ const ChatBox = (props: { Chatid: string }) => {
       p={3}
       fontSize={[10, 16, 21, 28, 38, 48]}
     >
-      <Flex w={"full"} bg={"DarkBlue"} color={"#FFF"} borderTopRadius={15}>
+      <Flex
+        w={"full"}
+        bg={"DarkBlue"}
+        color={"#FFF"}
+        borderTopRadius={15}
+        hidden={!props.enableHeader || false}
+      >
         <Center w={"full"}>
           <Text>{ChatInfo.name}</Text>
         </Center>

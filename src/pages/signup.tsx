@@ -103,7 +103,8 @@ const SignUp = () => {
         if (response.successful === true) {
           toast.success("Sign Up Successful!");
           setLoadingFlag.off();
-          router.push(`/users?id=${response.id}`);
+          // router.push(`/users?id=${response.id}`);
+          router.push(`/home`);
         } else {
           toast.error("Sign Up Failed :(");
           setLoadingFlag.off();

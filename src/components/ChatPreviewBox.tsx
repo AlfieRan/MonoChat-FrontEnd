@@ -2,8 +2,8 @@ import React, { Component, useEffect, useState } from "react";
 import * as env from "../env";
 import { Flex, Text, Link } from "@chakra-ui/react";
 
-const Message = (props: { id: string; name: string }) => {
-  const [UserInfo, setUserInfo] = useState<{
+const ChatPreviewBox = (props: { id: string; name: string }) => {
+  const [ChatInfo, setChatInfo] = useState<{
     id: string;
     name: string;
   }>({
@@ -11,23 +11,23 @@ const Message = (props: { id: string; name: string }) => {
     name: props.name
   });
 
+  console.log(ChatInfo);
+
   return (
     <Link
-      m={2}
       flexDir={"row"}
-      w={"inherit"}
-      maxWidth={"70%"}
+      maxWidth={"100%"}
       fontSize={[14, 15, 16, 18, 24, 31]}
       bg={"LightGrey"}
       color={"#FFF"}
       right={0}
       px={4}
       py={3}
-      href={`${env.URL}users/?id=${UserInfo.id}`}
+      href={`${env.URL}home/?Chatid=${ChatInfo.id}`}
     >
-      <Text>{UserInfo.name}</Text>
+      <Text>{ChatInfo.name}</Text>
     </Link>
   );
 };
 
-export default Message;
+export default ChatPreviewBox;

@@ -1,5 +1,5 @@
 import React, { Component, useEffect, useState } from "react";
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Link, Text } from "@chakra-ui/react";
 import { MessageInfo } from "../utils/types";
 
 const Message = (props: { info: MessageInfo }) => {
@@ -37,7 +37,9 @@ const Message = (props: { info: MessageInfo }) => {
       color={"#FFF"}
       m={2}
     >
-      <Text px={2}>{MessageInfo.username}</Text>
+      <Link href={`users?id=${MessageInfo.userid}`}>
+        <Text px={2}>{MessageInfo.username}</Text>
+      </Link>
       <Text bg={MsgColour} borderRadius={30} px={4} py={3}>
         {MessageInfo.content}
       </Text>
