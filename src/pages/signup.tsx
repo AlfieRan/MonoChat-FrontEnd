@@ -6,34 +6,14 @@ import {
   Input,
   Button,
   Link,
-  useBoolean
+  useBoolean,
 } from "@chakra-ui/react";
-import * as yup from "yup";
-import useSWR from "swr";
-import { UserInfo } from "../utils/types";
-import { fetcher } from "../utils/fetcher";
-import { Response } from "next/dist/server/web/spec-compliant/response";
-import { RequestInit } from "next/dist/server/web/spec-extension/request";
 import NavBar from "../components/NavBar";
 import * as env from "../env";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/router";
 
 //TODO add proper validation stuff, just using basic shit atm.
-
-// const SignUpSchema = yup.object({
-//   firstname: yup.string().nullable(),
-//   surname: yup.string().nullable(),
-//   email: yup
-//     .string()
-//     .nullable()
-//     .email(),
-//   password: yup.string().nullable(),
-//   passwordCheck: yup.string().nullable()
-// });
-//
-// interface User extends yup.TypeOf<typeof SignUpSchema> {}
-// const validated: User = User.cast(json);
 
 interface User {
   firstname: string;
@@ -65,20 +45,23 @@ const SignUp = () => {
     surname: "",
     email: "",
     password: "",
-    passwordCheck: ""
+    passwordCheck: "",
   });
   const [paramErrs, setParamErrs] = useState<Params>({
     firstname: false,
     surname: false,
     email: false,
     password: false,
-    passwordCheck: false
+    passwordCheck: false,
   });
 
   const router = useRouter();
   useEffect(() => {
     if (router && router.query.email) {
-      setSignUpData(prev => ({ ...prev, email: router.query.email as string }));
+      setSignUpData((prev) => ({
+        ...prev,
+        email: router.query.email as string,
+      }));
     }
   }, [router]);
 
@@ -87,19 +70,19 @@ const SignUp = () => {
       name: info.firstname + " " + info.surname,
       email: info.email,
       password: info.password,
-      passwordCheck: info.passwordCheck
+      passwordCheck: info.passwordCheck,
     };
     const SignUpRequest = new Request(`${env.ApiURL}signup`, {
       method: "POST",
       mode: "cors", // no-cors, *cors, same-origin
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(UserBody)
+      body: JSON.stringify(UserBody),
     });
     await fetch(SignUpRequest)
-      .then(response => response.json())
-      .then(response => {
+      .then((response) => response.json())
+      .then((response) => {
         if (response.successful === true) {
           toast.success("Sign Up Successful!");
           setLoadingFlag.off();
@@ -214,12 +197,18 @@ const SignUp = () => {
             placeholder="First Name"
             id={"FirstName"}
             value={SignUpData.firstname}
-            onChange={e => {
-              setSignUpData(prev => ({ ...prev, firstname: e.target.value }));
+            onChange={(e) => {
+              setSignUpData((prev) => ({ ...prev, firstname: e.target.value }));
               if (nameCheck(e.target.value)) {
-                setParamErrs(prevState => ({ ...prevState, firstname: false }));
+                setParamErrs((prevState) => ({
+                  ...prevState,
+                  firstname: false,
+                }));
               } else {
-                setParamErrs(prevState => ({ ...prevState, firstname: true }));
+                setParamErrs((prevState) => ({
+                  ...prevState,
+                  firstname: true,
+                }));
               }
             }}
             borderColor={paramErrs.firstname ? "red.500" : "white"}
@@ -233,12 +222,12 @@ const SignUp = () => {
             placeholder="Surname"
             value={SignUpData.surname}
             id={"surname"}
-            onChange={e => {
-              setSignUpData(prev => ({ ...prev, surname: e.target.value }));
+            onChange={(e) => {
+              setSignUpData((prev) => ({ ...prev, surname: e.target.value }));
               if (nameCheck(e.target.value)) {
-                setParamErrs(prevState => ({ ...prevState, surname: false }));
+                setParamErrs((prevState) => ({ ...prevState, surname: false }));
               } else {
-                setParamErrs(prevState => ({ ...prevState, surname: true }));
+                setParamErrs((prevState) => ({ ...prevState, surname: true }));
               }
             }}
             borderColor={paramErrs.surname ? "red.500" : "white"}
@@ -253,12 +242,12 @@ const SignUp = () => {
             id={"email"}
             type={"text"}
             value={SignUpData.email}
-            onChange={e => {
-              setSignUpData(prev => ({ ...prev, email: e.target.value }));
+            onChange={(e) => {
+              setSignUpData((prev) => ({ ...prev, email: e.target.value }));
               if (emailCheck(e.target.value)) {
-                setParamErrs(prevState => ({ ...prevState, email: false }));
+                setParamErrs((prevState) => ({ ...prevState, email: false }));
               } else {
-                setParamErrs(prevState => ({ ...prevState, email: true }));
+                setParamErrs((prevState) => ({ ...prevState, email: true }));
               }
             }}
             borderColor={paramErrs.email ? "red.500" : "white"}
@@ -273,13 +262,16 @@ const SignUp = () => {
             type={"password"}
             id={"pass"}
             value={SignUpData.password}
-            onChange={e => {
-              setSignUpData(prev => ({ ...prev, password: e.target.value }));
+            onChange={(e) => {
+              setSignUpData((prev) => ({ ...prev, password: e.target.value }));
               //TODO make the password check a lot more dignified than just if the password is more than one character lol
               if (passCheck(e.target.value)) {
-                setParamErrs(prevState => ({ ...prevState, password: false }));
+                setParamErrs((prevState) => ({
+                  ...prevState,
+                  password: false,
+                }));
               } else {
-                setParamErrs(prevState => ({ ...prevState, password: true }));
+                setParamErrs((prevState) => ({ ...prevState, password: true }));
               }
             }}
             borderColor={paramErrs.password ? "red.500" : "white"}
@@ -294,21 +286,21 @@ const SignUp = () => {
             value={SignUpData.passwordCheck}
             type={"password"}
             id={"passCheck"}
-            onChange={e => {
-              setSignUpData(prev => ({
+            onChange={(e) => {
+              setSignUpData((prev) => ({
                 ...prev,
-                passwordCheck: e.target.value
+                passwordCheck: e.target.value,
               }));
               // @ts-ignore
               if (compareCheck(SignUpData.password, e.target.value)) {
-                setParamErrs(prevState => ({
+                setParamErrs((prevState) => ({
                   ...prevState,
-                  passwordCheck: false
+                  passwordCheck: false,
                 }));
               } else {
-                setParamErrs(prevState => ({
+                setParamErrs((prevState) => ({
                   ...prevState,
-                  passwordCheck: true
+                  passwordCheck: true,
                 }));
               }
             }}
@@ -329,7 +321,7 @@ const SignUp = () => {
             _hover={{ bg: "#003399" }}
             _active={{
               bg: "#3784ff",
-              transform: "scale(0.97)"
+              transform: "scale(0.97)",
             }}
             onClick={Next}
           >

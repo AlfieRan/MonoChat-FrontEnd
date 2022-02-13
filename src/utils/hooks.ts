@@ -1,5 +1,6 @@
 import useSWR from "swr";
-import { MessageInfo } from "./types";
+import { MessageInfo, UserLogging } from "./types";
+import { fetcher } from "./fetcher";
 
 export function getChatInfo(Chatid: string) {
   return useSWR<{ id: string; chatname: string }>(`chats/info?id=${Chatid}`);
@@ -11,8 +12,7 @@ export function getMessages(Chatid: string) {
   }>(`chats/messages?id=${Chatid}`);
 }
 
-export function getMessageInfo(Messageid: string) {
-  return useSWR<{ content: string; userId: string; createdAt: string }>(
-    `message/info?id=${Messageid}`
-  );
+export async function checkUserLogin() {
+  const status = await fetcher<UserLogging>("GET", "user/checkAuth");
+  return status.data;
 }

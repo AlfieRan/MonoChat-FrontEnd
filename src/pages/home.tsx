@@ -1,10 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import NavBar from "../components/NavBar";
 import ChatBox from "../components/ChatBox";
 import FriendBox from "../components/FriendBox";
-import { Box, Text, Heading, Center, Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import { checkUserLogin } from "../utils/hooks";
 
 const Home = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    checkUserLogin().then((isLogged) => {
+      if (!isLogged.logged) {
+        router.push("signin");
+      }
+    });
+  }, []);
+
   return (
     <Box>
       <NavBar />

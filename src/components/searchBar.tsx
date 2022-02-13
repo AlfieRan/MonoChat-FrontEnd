@@ -10,7 +10,7 @@ import {
   InputGroup,
   InputLeftElement,
   InputLeftAddon,
-  Center
+  Center,
 } from "@chakra-ui/react";
 import * as env from "../env";
 import { Search2Icon } from "@chakra-ui/icons";
@@ -49,7 +49,7 @@ const SearchBar = (props: SearchBarProps) => {
             noOfLines={1}
             placeholder={"Search for people you know..."}
             value={query}
-            onChange={e => {
+            onChange={(e) => {
               handleInputChange(e.target.value);
             }}
             fontSize={[14, 20, 25, 33, 42, 52]}
@@ -63,8 +63,10 @@ const SearchBar = (props: SearchBarProps) => {
               borderColor={"#444"}
               flexDir={"column"}
             >
-              {data.map(v => (
-                <Link href={"/users?id=" + v.id}>{v.name}</Link>
+              {data.map((v) => (
+                <Link href={"/users?id=" + v.id} key={v.id}>
+                  {v.name}
+                </Link>
               ))}
             </Flex>
           )}
