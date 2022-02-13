@@ -12,7 +12,7 @@ interface Pages {
   disabled: boolean;
 }
 
-const cookies = (props: { hidden?: boolean }) => {
+const Cookies = (props: { hidden?: boolean }) => {
   const router = useRouter();
 
   if (props.hidden) {
@@ -60,4 +60,4 @@ const cookies = (props: { hidden?: boolean }) => {
   );
 };
 
-export default cookies;
+export default Cookies;
