@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Flex,
   Center,
@@ -7,26 +7,24 @@ import {
   VStack,
   Input,
   Spacer,
-  Button
+  Button,
 } from "@chakra-ui/react";
-import toast from "react-hot-toast";
 import Message from "./message";
 import { getChatInfo, getMessages } from "../utils/hooks";
 import { fetcher } from "../utils/fetcher";
 import { MessageInfo } from "../utils/types";
-import { ArrowForwardIcon } from "@chakra-ui/icons";
 
 async function sendMessage(contents: string, userId: string, ChatId: string) {
   const newMsgId = await fetcher("POST", `message/send`, {
     senderId: userId,
     chatId: ChatId,
-    msgcontents: contents
+    msgcontents: contents,
   });
   // @ts-ignore
   return newMsgId.data.Msg as MessageInfo;
 }
 
-const ChatBox = (props: { Chatid: string }) => {
+const ChatBox = (props: { Chatid: string; enableHeader?: boolean }) => {
   const [ChatInfo, setChatInfo] = useState<{
     id: string;
     name: string;
@@ -34,7 +32,7 @@ const ChatBox = (props: { Chatid: string }) => {
   }>({
     id: props.Chatid,
     name: "Loading...",
-    messages: [{ id: "", content: "", sender: { id: "", name: "" } }]
+    messages: [{ id: "", content: "", sender: { id: "", name: "" } }],
   });
 
   const [MessageBox, setMessageBox] = useState<string>("");
@@ -43,13 +41,13 @@ const ChatBox = (props: { Chatid: string }) => {
 
   useEffect(() => {
     if (ChatInfoData) {
-      setChatInfo(prev => ({ ...prev, name: ChatInfoData.chatname }));
+      setChatInfo((prev) => ({ ...prev, name: ChatInfoData.chatname }));
     }
   }, [ChatInfoData]);
 
   useEffect(() => {
     if (MsgData) {
-      setChatInfo(prev => ({ ...prev, messages: MsgData.messages }));
+      setChatInfo((prev) => ({ ...prev, messages: MsgData.messages }));
     }
   }, [MsgData]);
 
@@ -61,7 +59,13 @@ const ChatBox = (props: { Chatid: string }) => {
       p={3}
       fontSize={[10, 16, 21, 28, 38, 48]}
     >
-      <Flex w={"full"} bg={"DarkBlue"} color={"#FFF"} borderTopRadius={15}>
+      <Flex
+        w={"full"}
+        bg={"DarkBlue"}
+        color={"#FFF"}
+        borderTopRadius={15}
+        hidden={!props.enableHeader || false}
+      >
         <Center w={"full"}>
           <Text>{ChatInfo.name}</Text>
         </Center>
@@ -101,21 +105,21 @@ const ChatBox = (props: { Chatid: string }) => {
             px={"2%"}
             fontSize={[10, 16, 22]}
             color={"#000"}
-            onChange={e => {
+            onChange={(e) => {
               setMessageBox(e.target.value);
             }}
             w={"full"}
-            onKeyDown={e => {
+            onKeyDown={(e) => {
               if (e.key === "Enter" && MessageBox != "" && MessageBox != " ") {
                 sendMessage(
                   MessageBox,
                   "ab6108ef-cd35-4bff-b2f0-35003883bac7",
                   ChatInfo.id
-                ).then(newMsg => {
+                ).then((newMsg) => {
                   console.log(newMsg);
-                  setChatInfo(prev => ({
+                  setChatInfo((prev) => ({
                     ...prev,
-                    messages: Array(newMsg, ...prev.messages)
+                    messages: Array(newMsg, ...prev.messages),
                   }));
                   setMessageBox("");
                   window.scrollTo(0, document.body.scrollHeight);

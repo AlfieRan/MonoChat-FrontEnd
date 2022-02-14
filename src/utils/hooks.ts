@@ -16,3 +16,13 @@ export async function checkUserLogin() {
   const status = await fetcher<UserLogging>("GET", "user/checkAuth");
   return status.data;
 }
+
+export function GetUserToUserChat(userid: string) {
+  return useSWR<{ chatid: string }>(`chats/info/usertouser?id:${userid}`);
+}
+
+export function GetRecentChats() {
+  return useSWR<{ chats: { id: string; chatname: string }[] }>(
+    `user/get/chats`
+  );
+}

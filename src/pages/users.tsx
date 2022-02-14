@@ -1,53 +1,56 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Center, Flex, Text } from "@chakra-ui/react";
 import * as env from "../env";
 import { toast, Toaster } from "react-hot-toast";
+import ChatBox from "../components/ChatBox";
+import { GetUserToUserChat } from "../utils/hooks";
+import { useRouter } from "next/router";
 
 interface UserInfo {
   name: string;
+  id: string;
 }
 
 const Users = () => {
-  const [UserInfo, SetUserInfo] = useState<UserInfo>({ name: "Loading..." });
+  const [UserInfo, SetUserInfo] = useState<UserInfo>({
+    name: "Loading...",
+    id: ""
+  });
+
+  const router = useRouter();
   useEffect(() => {
-    try {
-      const QueryUserID = document.URL.split("?")[1].split("=")[1];
-      updateUserInfo(QueryUserID);
-    } catch (err) {
+    if (router && router.query.id) {
+      try {
+        const QueryUserID = router.query.id;
+        SetUserInfo(prev => ({ ...prev, id: QueryUserID as string }));
+        const chatid = GetUserToUserChat(QueryUserID as string);
+      } catch (e) {
+        console.log(`Generic Error: ${e}`);
+      }
+    } else {
       console.log("No User Id supplied");
     }
-  }, []);
-
-  async function updateUserInfo(UID: string) {
-    const FetchData = new Request(`${env.ApiURL}user?q=${UID}`, {
-      method: "GET",
-      mode: "cors", // no-cors, *cors, same-origin
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-    await fetch(FetchData)
-      .then(response => response.json())
-      .then(response => {
-        console.log(response);
-        if (response.successful === true) {
-          SetUserInfo(response.payload);
-        } else {
-          SetUserInfo({ name: "No User Found" });
-          toast.error("User not found.");
-        }
-      })
-      .catch(e => {
-        SetUserInfo({ name: e });
-      });
-  }
+  }, [router]);
 
   return (
-    <Box>
+    <Box w={"100vw"} h={"100vh"} display={"flex"} flexFlow={"column"}>
       <Toaster />
       <NavBar />
-      <Text>{UserInfo.name}</Text>
+      <Center flex={"auto"}>
+        <Flex
+          w={"95vw"}
+          h={"83vh"}
+          bg={"LightGrey"}
+          borderRadius={20}
+          flexDir={"column"}
+        >
+          <Center w={"95vw"} h={"10vh"} bg={"MidBlue"} borderTopRadius={20}>
+            <Text fontSize={"4vh"}>{UserInfo.name}</Text>
+          </Center>
+          <ChatBox Chatid={""} enableHeader={false}></ChatBox>
+        </Flex>
+      </Center>
     </Box>
   );
 };

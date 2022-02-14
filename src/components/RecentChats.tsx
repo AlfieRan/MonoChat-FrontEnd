@@ -1,16 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Flex, Center, Text, VStack } from "@chakra-ui/react";
-import UserBox from "./UserBox";
+import UserBox from "./ChatPreviewBox";
+import { GetRecentChats } from "../utils/hooks";
 
-type BaseUser = {
-  id: string;
-  name: string;
-};
+const RecentChats = () => {
+  const [UserRecentChats, SetUserRecentChats] = useState<
+    { id: string; chatname: string }[]
+  >([{ id: "", chatname: "" }]);
 
-const FriendBox = () => {
-  const [UserFriends, SetUserFriends] = useState<BaseUser[]>([
-    { id: "", name: "" }
-  ]);
+  const { data: RecChats, error: RecChatError } = GetRecentChats();
+
+  useEffect(() => {
+    if (RecChats) {
+      SetUserRecentChats(RecChats.chats);
+    }
+  }, [RecChats]);
 
   return (
     <Flex
@@ -37,19 +41,15 @@ const FriendBox = () => {
         w={"inherit"}
         borderBottomRadius={15}
       >
-        {UserFriends && (
+        {UserRecentChats && (
           <Flex
             flexDir={"column-reverse"}
             overflow={"auto"}
             scrollPaddingBottom={"2em"}
             w={"inherit"}
           >
-            {UserFriends.map((FriendID: BaseUser) => (
-              <UserBox
-                id={FriendID.id}
-                name={FriendID.name}
-                key={FriendID.id}
-              />
+            {UserRecentChats.map((Chat: { id: string; chatname: string }) => (
+              <UserBox id={Chat.id} name={Chat.chatname} key={Chat.id} />
             ))}
           </Flex>
         )}
@@ -58,4 +58,4 @@ const FriendBox = () => {
   );
 };
 
-export default FriendBox;
+export default RecentChats;
