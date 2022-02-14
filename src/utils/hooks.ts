@@ -17,8 +17,12 @@ export async function checkUserLogin() {
   return status.data;
 }
 
-export function GetUserToUserChat(userid: string) {
-  return useSWR<{ chatid: string }>(`chats/info/usertouser?id:${userid}`);
+export async function GetUserToUserChat(userid: string) {
+  const chatid = await fetcher<{ chatid: string }>(
+    "GET",
+    `chats/info/usertouser?id:${userid}`
+  );
+  return chatid;
 }
 
 export function GetRecentChats() {

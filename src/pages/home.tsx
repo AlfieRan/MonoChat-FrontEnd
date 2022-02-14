@@ -39,7 +39,7 @@ const Home = () => {
           <FriendBox></FriendBox>
         </Flex>
         <Flex h={"74vh"} w={"78vw"}>
-          <ChatBox Chatid={CurChatInfo.id} />
+          <ChatBox Chatid={CurChatInfo.id} enableHeader />
         </Flex>
       </Flex>
     </Box>

@@ -15,16 +15,20 @@ interface UserInfo {
 const Users = () => {
   const [UserInfo, SetUserInfo] = useState<UserInfo>({
     name: "Loading...",
-    id: ""
+    id: "",
   });
+
+  const [chatid, setChatId] = useState<string>("");
 
   const router = useRouter();
   useEffect(() => {
     if (router && router.query.id) {
       try {
         const QueryUserID = router.query.id;
-        SetUserInfo(prev => ({ ...prev, id: QueryUserID as string }));
-        const chatid = GetUserToUserChat(QueryUserID as string);
+        SetUserInfo((prev) => ({ ...prev, id: QueryUserID as string }));
+        GetUserToUserChat(QueryUserID as string).then((res) => {
+          setChatId(res.data.chatid);
+        });
       } catch (e) {
         console.log(`Generic Error: ${e}`);
       }
@@ -48,7 +52,7 @@ const Users = () => {
           <Center w={"95vw"} h={"10vh"} bg={"MidBlue"} borderTopRadius={20}>
             <Text fontSize={"4vh"}>{UserInfo.name}</Text>
           </Center>
-          <ChatBox Chatid={""} enableHeader={false}></ChatBox>
+          <ChatBox Chatid={chatid} enableHeader={false}></ChatBox>
         </Flex>
       </Center>
     </Box>
