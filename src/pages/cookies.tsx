@@ -15,10 +15,6 @@ interface Pages {
 const Cookies = (props: { hidden?: boolean }) => {
   const router = useRouter();
 
-  if (props.hidden) {
-    return null;
-  }
-
   const [whichPage, setWhichPage] = useState<Pages>({
     noChoice: true,
     enabled: false,
@@ -48,6 +44,9 @@ const Cookies = (props: { hidden?: boolean }) => {
     }
   }, []);
 
+  if (props.hidden) {
+    return null;
+  }
   return (
     <Box>
       <CookieRequest hidden={!whichPage.noChoice} retAddress={returnAddress} />
