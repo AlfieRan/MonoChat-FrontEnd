@@ -39,7 +39,7 @@ interface Params {
 }
 
 const SignUp = () => {
-  const [Loadingflag, setLoadingFlag] = useBoolean();
+  const [Loadingflag, setLoadingFlag] = useBoolean(false);
   const [SignUpData, setSignUpData] = useState<User>({
     firstname: "",
     surname: "",
