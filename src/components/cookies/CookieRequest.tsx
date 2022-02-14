@@ -8,7 +8,7 @@ type Props = {
   retAddress: returnAddressType;
 };
 
-const cookieRequest = (props: Props) => {
+const CookieRequest = (props: Props) => {
   const router = useRouter();
 
   function enableCookies() {
@@ -57,4 +57,4 @@ const cookieRequest = (props: Props) => {
   );
 };
 
-export default cookieRequest;
+export default CookieRequest;

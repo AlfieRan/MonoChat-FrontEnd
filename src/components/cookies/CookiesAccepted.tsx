@@ -7,7 +7,7 @@ interface Props {
   hidden?: boolean;
 }
 
-const cookieRequest = (props: Props) => {
+const CookieAccepted = (props: Props) => {
   const router = useRouter();
 
   function disableCookies() {
@@ -40,4 +40,4 @@ const cookieRequest = (props: Props) => {
   );
 };
 
-export default cookieRequest;
+export default CookieAccepted;
