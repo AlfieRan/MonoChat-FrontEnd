@@ -21,7 +21,7 @@ const CookieAccepted = (props: Props) => {
     <Box w={"100vw"} h={"100vh"} display={"block"} bg={"MidBlue"}>
       <NavBar />
       <Center w={"full"} h={"90%"} flexDir={"column"}>
-        <Center br={15} flexDir={"column"}>
+        <Center flexDir={"column"}>
           <Text fontSize={"5xl"}>You Have Enabled Cookies</Text>
           <Text>Do you wish to revoke consent?</Text>
         </Center>

@@ -26,7 +26,7 @@ const CookieDisabled = (props: Props) => {
   return (
     <Box w={"100vw"} h={"100vh"} display={"block"}>
       <Center w={"full"} h={"full"} flexDir={"column"} bg={"MidBlue"}>
-        <Center br={15} flexDir={"column"} textAlign={"center"}>
+        <Center flexDir={"column"} textAlign={"center"}>
           <Text fontSize={"5xl"}>You Have Disabled Cookies</Text>
           <Text>This means that this site will not work</Text>
           <Text>Would you like to change your decision and give consent?</Text>
