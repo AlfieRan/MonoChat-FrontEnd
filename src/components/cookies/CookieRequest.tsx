@@ -30,7 +30,7 @@ const CookieRequest = (props: Props) => {
   return (
     <Box w={"100vw"} h={"100vh"} display={"block"}>
       <Center w={"full"} h={"full"} flexDir={"column"} bg={"MidBlue"}>
-        <Center br={15} flexDir={"column"}>
+        <Center flexDir={"column"}>
           <Text fontSize={"5xl"}>MonoChat Needs Cookies to function</Text>
           <Text>Do you consent to letting this site use cookies?</Text>
         </Center>
