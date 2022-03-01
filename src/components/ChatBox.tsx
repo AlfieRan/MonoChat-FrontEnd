@@ -116,7 +116,6 @@ const ChatBox = (props: { Chatid: string; enableHeader?: boolean }) => {
                   "ab6108ef-cd35-4bff-b2f0-35003883bac7",
                   ChatInfo.id
                 ).then((newMsg) => {
-                  console.log(newMsg);
                   setChatInfo((prev) => ({
                     ...prev,
                     messages: Array(newMsg, ...prev.messages),

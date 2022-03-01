@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Heading,
-  Text,
-  Input,
-  Button,
-  Link,
-  useBoolean,
-} from "@chakra-ui/react";
+import { Box, Heading, Text, Input, Button, Link } from "@chakra-ui/react";
 import NavBar from "../components/NavBar";
 import * as env from "../env";
 import toast, { Toaster } from "react-hot-toast";
@@ -39,7 +31,7 @@ interface Params {
 }
 
 const SignUp = () => {
-  const [Loadingflag, setLoadingFlag] = useBoolean(false);
+  const [Loadingflag, setLoadingFlag] = useState<boolean>(false);
   const [SignUpData, setSignUpData] = useState<User>({
     firstname: "",
     surname: "",
@@ -85,12 +77,12 @@ const SignUp = () => {
       .then((response) => {
         if (response.successful === true) {
           toast.success("Sign Up Successful!");
-          setLoadingFlag.off();
+          setLoadingFlag(false);
           // router.push(`/users?id=${response.id}`);
           router.push(`/home`);
         } else {
           toast.error("Sign Up Failed :(");
-          setLoadingFlag.off();
+          setLoadingFlag(false);
         }
       });
   }
@@ -103,7 +95,7 @@ const SignUp = () => {
       passCheck(SignUpData.password) &&
       compareCheck(SignUpData.password, SignUpData.passwordCheck)
     ) {
-      setLoadingFlag.on();
+      setLoadingFlag(true);
       SubmitData(SignUpData);
     } else {
       console.log("F");
@@ -348,4 +340,5 @@ const SignUp = () => {
   );
 };
 
-export default SignUp();
+export default SignUp;
+``;

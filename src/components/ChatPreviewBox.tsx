@@ -11,8 +11,6 @@ const ChatPreviewBox = (props: { id: string; name: string }) => {
     name: props.name,
   });
 
-  console.log(ChatInfo);
-
   return (
     <Link
       flexDir={"row"}

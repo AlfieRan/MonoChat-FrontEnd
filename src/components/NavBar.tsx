@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 import { UserLogging } from "../utils/types";
 import { checkUserLogin } from "../utils/hooks";
 import { ChatIcon, Search2Icon } from "@chakra-ui/icons";
+import { fetcher } from "../utils/fetcher";
 
 const NavBar = () => {
   const mainURL: string = env.URL;
@@ -111,6 +112,11 @@ const NavBar = () => {
             <MenuItem
               _hover={{ bg: "none", color: "#4477bb" }}
               _focus={{ bg: "none" }}
+              onClick={(e) => {
+                fetcher<null>("GET", "logout").then((e) => {
+                  router.reload();
+                });
+              }}
             >
               Log Out
             </MenuItem>
