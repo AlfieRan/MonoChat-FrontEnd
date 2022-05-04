@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Flex, Center, Text, VStack } from "@chakra-ui/react";
+import { Flex, Center, Text, VStack, Button, Link } from "@chakra-ui/react";
 import UserBox from "./ChatPreviewBox";
 import { GetRecentChats } from "../utils/hooks";
 
@@ -32,27 +32,24 @@ const RecentChats = () => {
         bg={"DarkBlue"}
         color={"#FFF"}
       >
-        <Text>Friends</Text>
+        <Text>Chats</Text>
       </Center>
-      <VStack
-        bg={"#565656"}
-        px={4}
-        h={"full"}
-        w={"inherit"}
-        borderBottomRadius={15}
-      >
-        {UserRecentChats && (
-          <Flex
-            flexDir={"column-reverse"}
-            overflow={"auto"}
-            scrollPaddingBottom={"2em"}
-            w={"inherit"}
-          >
-            {UserRecentChats.map((Chat: { id: string; chatname: string }) => (
-              <UserBox id={Chat.id} name={Chat.chatname} key={Chat.id} />
-            ))}
-          </Flex>
-        )}
+      <VStack bg={"#565656"} h={"full"} w={"inherit"} borderBottomRadius={15}>
+        <VStack w={"inherit"} px={4} h={"full"}>
+          {UserRecentChats && (
+            <Flex
+              flexDir={"column-reverse"}
+              overflow={"auto"}
+              scrollPaddingBottom={"2em"}
+              w={"inherit"}
+            >
+              {UserRecentChats.map((Chat: { id: string; chatname: string }) => (
+                <UserBox id={Chat.id} name={Chat.chatname} key={Chat.id} />
+              ))}
+            </Flex>
+          )}
+        </VStack>
+        <Link textAlign={"center"}>New Chat</Link>
       </VStack>
     </Flex>
   );

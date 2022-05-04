@@ -18,9 +18,9 @@ export async function checkUserLogin() {
 }
 
 export async function GetUserToUserChat(userid: string) {
-  const chatid = await fetcher<{ chatid: string }>(
+  const chatid = await fetcher<string>(
     "GET",
-    `chats/info/usertouser?id:${userid}`
+    `chats/info/usertouser?id=${userid}`
   );
   return chatid;
 }
@@ -29,4 +29,17 @@ export function GetRecentChats() {
   return useSWR<{ chats: { id: string; chatname: string }[] }>(
     `user/get/chats`
   );
+}
+
+export async function GetMostRecentChat() {
+  const chats = (
+    await fetcher<{ chats: { id: string; chatname: string }[] }>(
+      "GET",
+      "user/get/chats"
+    )
+  ).data.chats;
+  if (chats.length > 0) {
+    return chats[0];
+  }
+  return null;
 }

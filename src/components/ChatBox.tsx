@@ -51,6 +51,16 @@ const ChatBox = (props: { Chatid: string; enableHeader?: boolean }) => {
     }
   }, [MsgData]);
 
+  useEffect(() => {
+    if (props.Chatid) {
+      setChatInfo((c) => ({ ...c, id: props.Chatid }));
+    }
+  }, [props.Chatid]);
+
+  if (!props.enableHeader) {
+    return null;
+  }
+
   return (
     <Flex
       flexDir={"column"}

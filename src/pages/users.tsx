@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import { Box, Center, Flex, Text } from "@chakra-ui/react";
-import * as env from "../env";
 import { toast, Toaster } from "react-hot-toast";
 import ChatBox from "../components/ChatBox";
 import { GetUserToUserChat } from "../utils/hooks";
 import { useRouter } from "next/router";
+import { fetcher } from "../utils/fetcher";
 
 interface UserInfo {
   name: string;
@@ -13,27 +13,51 @@ interface UserInfo {
 }
 
 const Users = () => {
-  const [UserInfo, SetUserInfo] = useState<UserInfo>({
+  const [UserInfo, setUserInfo] = useState<UserInfo>({
     name: "Loading...",
     id: "",
   });
+  const [isSelf, setIsSelf] = useState<boolean>(false);
 
   const [chatid, setChatId] = useState<string>("");
 
   const router = useRouter();
   useEffect(() => {
-    if (router && router.query.id) {
-      try {
-        const QueryUserID = router.query.id;
-        SetUserInfo((prev) => ({ ...prev, id: QueryUserID as string }));
-        GetUserToUserChat(QueryUserID as string).then((res) => {
-          setChatId(res.data.chatid);
-        });
-      } catch (e) {
-        console.log(`Generic Error: ${e}`);
-      }
-    } else {
-      console.log("No User Id supplied");
+    if (router) {
+      fetcher<{ logged: boolean }>("GET", "user/checkAuth").then((res) => {
+        if (!res.data.logged) {
+          router.push("/signin");
+        }
+
+        if (router && router.query.id) {
+          try {
+            const QueryUserID = router.query.id;
+            fetcher<string>("GET", "getUserId").then((curUserId) => {
+              if (curUserId.data === QueryUserID) {
+                setIsSelf(true);
+                setUserInfo((prev) => ({
+                  ...prev,
+                  name: "This is your profile!",
+                }));
+              } else {
+                fetcher<{ name: string }>("GET", `user?q=${QueryUserID}`).then(
+                  (res) => {
+                    setUserInfo((prev) => ({ ...prev, name: res.data.name }));
+                  }
+                );
+                setUserInfo((prev) => ({ ...prev, id: QueryUserID as string }));
+                GetUserToUserChat(QueryUserID as string).then((res) => {
+                  setChatId(res.data);
+                });
+              }
+            });
+          } catch (e) {
+            console.log(`Generic Error: ${e}`);
+          }
+        } else {
+          console.log("No User Id supplied");
+        }
+      });
     }
   }, [router]);
 
@@ -52,7 +76,14 @@ const Users = () => {
           <Center w={"95vw"} h={"10vh"} bg={"MidBlue"} borderTopRadius={20}>
             <Text fontSize={"4vh"}>{UserInfo.name}</Text>
           </Center>
-          <ChatBox Chatid={chatid} enableHeader={false}></ChatBox>
+          {!isSelf && chatid && (
+            <ChatBox Chatid={chatid} enableHeader={false}></ChatBox>
+          )}
+          {isSelf && (
+            <Center w={"full"} h={"full"}>
+              This is your own profile, you can't chat to yourself!
+            </Center>
+          )}
         </Flex>
       </Center>
     </Box>
